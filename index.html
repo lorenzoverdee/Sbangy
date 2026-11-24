@@ -253,7 +253,7 @@ const NAV=[["draw","Pesca"],["coupons","Coupon","cpn"],["advent","Avvento","gift
 
 /* ================= STATO + LOCALSTORAGE ================= */
 const KEY="sbangy-v1";
-let S={names:{a:"Ginevra",b:"Lorenzo"},me:null,turn:"a",theme:"natale",lvl:3,sound:true,big:false,hc:false,mascots:[{id:"crab",n:"Sbang",s:110,p:null}],mSel:"crab",advent:{},dev:"auto",devDate:null,mPos:null,
+let S={names:{a:"Ginevra",b:"Lorenzo"},me:null,turn:"a",theme:"natale",lvl:3,sound:true,big:false,hc:false,mascots:[{id:"crab",n:"Sbang",s:110,p:null}],mSel:"crab",advent:{},dev:"auto",devDate:null,demoN:0,gameOk:false,mPos:null,
  custom:[],favs:[],coupons:{},log:[],done:0,pass:{},filter:"all",cust:{acc:"#f4a6b8",acc2:"#d6304f",bg:"#0f111a",ink:"#f6eef0",img:null},myLetter:"",theirLetter:"",sim:false,mile:0};
 try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||"{}"));}catch(e){}
 if(!S.mascots||!S.mascots.length)S.mascots=[{id:"crab",n:"Sbang",s:110,p:null}];
@@ -271,7 +271,10 @@ const all=()=>BASE.concat(S.custom), byId=id=>id==="gift"?GIFT:all().find(c=>c.i
 const $=i=>document.getElementById(i), esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const nm=p=>p==="ab"?S.names.a+" e "+S.names.b:S.names[p];
 const now=()=>{if(S.devDate){const [y,m,d]=S.devDate.split("-").map(Number);return new Date(y,m-1,d,12);}return new Date();};
-const D4=new Date(2026,11,4),D17=new Date(2026,11,17);
+const D4=new Date(2026,11,4),D17=new Date(2026,11,17),D9=new Date(2026,11,9);
+// Fino al 9 dicembre: solo 3 carte fisse (domanda, sfida con timer, coupon), sempre le stesse e nello stesso ordine
+const DEMO=["b0","b3","b18"];
+const demoOn=()=>now()<D9&&!S.gameOk;
 let current=null,drawer="a",busy=false,AC=null;
 
 /* ================= UTILITÀ ================= */
@@ -474,12 +477,20 @@ function renderChips(){$("chips").innerHTML=Object.entries(CATS).map(([k,v])=>`<
 $("chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;S.filter=b.dataset.k;save();renderChips();});
 let newCat="rom";
 $("newCats").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;newCat=b.dataset.k;renderChips();});
-function resetCard(){clearInterval(draw.t);$("card").classList.remove("flip","show");$("actions").classList.remove("on");$("deck").style.visibility="visible";current=null;$("hint").textContent="Tocca il mazzo (o scorri verso l'alto) per pescare";}
+function resetCard(){clearInterval(draw.t);$("card").classList.remove("flip","show");$("actions").classList.remove("on");$("deck").style.visibility="visible";current=null;$("hint").textContent="Tocca il mazzo (o scorri verso l'alto) per pescare";demoUI();}
+function demoUI(){const sm=document.querySelector("#deck .back small"),h=$("hint");if(!sm)return;$("chips").style.display=demoOn()?"none":""; // in prova i filtri non servono
+ if(demoOn()){const left=DEMO.length-S.demoN;sm.textContent=left>0?"Carta di prova "+(S.demoN+1)+" di "+DEMO.length:"🔒 Dal 9 dicembre";
+  if(!current)h.textContent=left>0?"Modalità prova: "+DEMO.length+" carte per scoprire come funziona":"Il gioco completo si sblocca il 9 dicembre";}
+ else sm.textContent="Tocca per pescare";}
+function demoLockMsg(){modal(`<h2>🔒 Il gioco si sblocca il 9 dicembre</h2><p>Hai provato le ${DEMO.length} carte di prova: ora sai come funziona. Il mazzo completo si apre il 9 dicembre.</p><button class="btn full" id="gOk">Ok</button><button class="btn ghost full" id="gUnl">🔒 Sblocca con password</button>`);
+ $("gOk").onclick=closeM;$("gUnl").onclick=unlockGame;react("wave","Pazienza fino al 9!");}
+function unlockGame(){askPw(()=>{S.gameOk=true;save();demoUI();reSet();toast("Gioco completo sbloccato");react("cheer","Si gioca!");confetti(60);});}
 function draw(){
-  if(busy||current)return;busy=true;
+  if(busy||current)return;
+  const dm=demoOn();if(dm&&S.demoN>=DEMO.length){demoLockMsg();return;}busy=true;
   const pool=all().filter(c=>c.l<=S.lvl&&(S.filter==="all"||c.cat===S.filter));
-  if(!pool.length){toast("Nessuna carta con questi filtri");busy=false;return;}
-  const pick=pool[Math.floor(Math.random()*pool.length)];current=pick;drawer=S.turn;
+  if(!dm&&!pool.length){toast("Nessuna carta con questi filtri");busy=false;return;}
+  const pick=dm?byId(DEMO[S.demoN]):pool[Math.floor(Math.random()*pool.length)];current=pick;drawer=S.turn;
   const card=$("card"),deck=$("deck"),cat=CATS[pick.cat];
   deck.classList.remove("shake");void deck.offsetWidth;deck.classList.add("shake");buzz(15);snd(300,.1);react("hop","Chi sarà?");
   card.style.setProperty("--cc",cat.c);$("ctag").innerHTML=svg(pick.cat)+cat.n;$("ctxt").textContent=pick.t;
@@ -490,7 +501,8 @@ function draw(){
       if(pick.cp&&!S.coupons[pick.id]){S.coupons[pick.id]={used:false,owner:drawer};save();updateBadge();confetti(90);react("cheer","Un coupon per "+S.names[drawer]+"!");}else confetti(30);},700);},280);
 }
 $("deck").addEventListener("click",draw);
-function nextTurn(){S.turn=S.turn==="a"?"b":"a";S.mile=S.mile||0;save();setTimeout(()=>{resetCard();renderTurn();},300);}
+function nextTurn(){if(demoOn()&&current&&current.id===DEMO[S.demoN])S.demoN++; // la carta di prova conta solo quando la completi
+ S.turn=S.turn==="a"?"b":"a";S.mile=S.mile||0;save();setTimeout(()=>{resetCard();renderTurn();},300);}
 $("doneBtn").addEventListener("click",()=>{if(!current)return;const c=current;
  let v=0;modal(`<h2>Com'è andata?</h2><p>${esc(c.t)}</p><div class="hearts" id="hr">${[1,2,3,4,5].map(n=>`<button data-v="${n}">💗</button>`).join("")}</div>
  <textarea id="note" placeholder="Una nota (facoltativa)"></textarea><button class="btn ghost" id="micN" style="margin-top:8px">🎙 Detta</button><button class="btn full" id="saveLog">Salva nel diario</button><button class="btn ghost full" id="skipLog">Salta</button>`);
@@ -539,9 +551,10 @@ $("favList").addEventListener("click",e=>{const b=e.target.closest(".icon-btn");
 $("saveBtn").addEventListener("click",()=>{const t=$("newText").value.trim();if(t.length<5){toast("Scrivi almeno qualche parola");return;}
  const cp=$("newCoupon").checked;S.custom.push({id:"c"+Date.now(),cat:cp?"cpn":newCat,t,k:cp?"Coupon":"Personalizzata",l:newCat==="hot"?3:newCat==="rom"?1:2,cp,s:0});
  save();$("newText").value="";$("newCoupon").checked=false;renderCustom();confetti(60);react("cheer","Carta nel mazzo!");});
-function renderCustom(){ // tutte le carte del gioco, divise per categoria (quelle tue si possono eliminare)
+function renderCustom(){ // tutte le carte; fino al 9 dicembre quelle del mazzo base sono oscurate (tranne le 3 di prova)
+ const sec=c=>demoOn()&&c.id[0]==="b"&&!DEMO.includes(c.id);
  $("customList").innerHTML=Object.keys(CATS).filter(k=>k!=="all").map(k=>{const L=all().filter(c=>c.cat===k);if(!L.length)return "";
-  return `<h3 style="color:${CATS[k].c}">${CATS[k].n} · ${L.length}</h3>`+L.map(c=>`<div class="item glass" style="--c:${CATS[k].c}"><div class="t">${esc(c.t)}<small>${["","Dolce","Media","Audace"][c.l]||""}${c.s?" · ⏱ "+tf(c.s):""}${c.id[0]==="c"?" · tua":""}</small></div>${c.id[0]==="c"?`<button class="icon-btn" data-id="${c.id}" aria-label="Elimina">${svg("trash")}</button>`:""}</div>`).join("");}).join("");}
+  return `<h3 style="color:${CATS[k].c}">${CATS[k].n} · ${L.length}</h3>`+L.map(c=>sec(c)?`<div class="item glass" style="--c:${CATS[k].c};opacity:.65"><div class="t">🔒 Carta segreta<small>Si scopre dal 9 dicembre</small></div></div>`:`<div class="item glass" style="--c:${CATS[k].c}"><div class="t">${esc(c.t)}<small>${["","Dolce","Media","Audace"][c.l]||""}${c.s?" · ⏱ "+tf(c.s):""}${c.id[0]==="c"?" · tua":""}</small></div>${c.id[0]==="c"?`<button class="icon-btn" data-id="${c.id}" aria-label="Elimina">${svg("trash")}</button>`:""}</div>`).join("");}).join("");}
 $("customList").addEventListener("click",e=>{const b=e.target.closest(".icon-btn");if(!b)return;const id=b.dataset.id;S.custom=S.custom.filter(c=>c.id!==id);S.favs=S.favs.filter(x=>x!==id);delete S.coupons[id];save();updateBadge();renderCustom();});
 mic($("newText"),$("micNew"));
 
@@ -555,13 +568,14 @@ function renderSet(){
  <label>Foto di sfondo</label><input type="file" id="cImg" accept="image/*"><button class="btn ghost full" id="cDel">Togli la foto</button></div>
  <h3>Gioco</h3><label>Intensità massima</label><select id="lvl"><option value="1" ${S.lvl==1?"selected":""}>Dolce</option><option value="2" ${S.lvl==2?"selected":""}>Media</option><option value="3" ${S.lvl==3?"selected":""}>Audace</option></select>
  <div class="row"><span>Suoni</span><input type="checkbox" id="snd" ${S.sound?"checked":""}></div>
+ ${demoOn()?`<h3>Modalità prova</h3><p style="font-size:.8rem;color:var(--mute);line-height:1.4;margin-bottom:8px">Fino al 9 dicembre sono disponibili solo ${DEMO.length} carte di prova.</p><button class="btn ghost full" id="unlGame">🔒 Sblocca il gioco completo</button>`:""}
  <h3>Mascotte</h3><div class="bubbles">${S.mascots.map(m=>`<button class="mb ${m.id===S.mSel?"on":""}" data-mid="${m.id}"><span>${mimg(m)?`<img src="${mimg(m)}" alt="">`:"🦀"}</span>${esc(m.n)}</button>`).join("")}<button class="mb add" id="mAdd"><span>+</span>Nuova</button></div>
  <label>Nome</label><input type="text" id="mN" value="${esc(cur().n)}"><label>Dimensione</label><input type="range" id="mS" min="70" max="170" value="${cur().s}" style="width:100%">
  ${cur().id!=="crab"?'<button class="btn ghost full" id="mDel">Elimina questa mascotte</button>':""}
  <h3>Dispositivo</h3><select id="dev"><option value="auto" ${S.dev==="auto"?"selected":""}>Automatico</option><option value="phone" ${S.dev==="phone"?"selected":""}>Telefono</option><option value="desktop" ${S.dev==="desktop"?"selected":""}>Computer</option></select>
  <h3>Accessibilità</h3><div class="row"><span>Testo grande</span><input type="checkbox" id="big" ${S.big?"checked":""}></div><div class="row"><span>Contrasto alto</span><input type="checkbox" id="hc" ${S.hc?"checked":""}></div>
  <h3>Dati</h3><p style="font-size:.8rem;color:var(--mute);margin-bottom:8px;line-height:1.4">${storState()}</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn full" id="expW">💬 Invia tutti i dati su WhatsApp</button><button class="btn ghost full" id="expF">💾 Salva tutti i dati in un file</button><button class="btn ghost full" id="expC">📋 Copia solo le carte create</button></div><p style="font-size:.76rem;color:var(--mute);margin:8px 0;line-height:1.4">I dati comprendono carte create, preferite, coupon, mascotte, regalini, diario e la tua lettera.</p><button class="btn ghost full" id="impFB">📂 Importa da file</button><input type="file" id="impF" style="display:none"><label>Oppure incolla un codice ricevuto</label><textarea id="impT" style="min-height:70px"></textarea><div style="display:flex;gap:8px;margin-top:8px"><button class="btn ghost" id="pasteB">📥 Incolla</button><button class="btn" id="imp" style="flex:1">Importa</button></div>
- ${S.me==="b"?`<h3>🛠 Modalità sviluppatore</h3>${S.simOk?`<label>Teletrasportati al giorno</label><input type="date" id="devD" value="${S.devDate||""}"><div class="chips" style="flex-wrap:wrap;margin-top:8px">${[["2026-12-01","1 dic"],["2026-12-04","4 dic"],["2026-12-17","17 dic"],["2026-12-24","24 dic"],["2026-12-25","25 dic"]].map(a=>`<button class="chip" data-dd="${a[0]}"><i></i>${a[1]}</button>`).join("")}</div><div style="display:flex;gap:8px"><button class="btn ghost" id="devToday" style="flex:1">Torna a oggi</button><button class="btn ghost" id="devLock" style="flex:1">Blocca</button></div>`:`<button class="btn ghost full" id="simBtn">🔒 Sblocca</button>`}`:""}`;
+ ${S.me==="b"?`<h3>🛠 Modalità sviluppatore</h3>${S.simOk?`<label>Teletrasportati al giorno</label><input type="date" id="devD" value="${S.devDate||""}"><div class="chips" style="flex-wrap:wrap;margin-top:8px">${[["2026-12-01","1 dic"],["2026-12-04","4 dic"],["2026-12-17","17 dic"],["2026-12-24","24 dic"],["2026-12-25","25 dic"]].map(a=>`<button class="chip" data-dd="${a[0]}"><i></i>${a[1]}</button>`).join("")}</div><div style="display:flex;gap:8px"><button class="btn ghost" id="devToday" style="flex:1">Torna a oggi</button><button class="btn ghost" id="devLock" style="flex:1">Blocca</button></div><div class="row"><span>Blocco 3 carte (fino al 9)</span><button class="pill" id="demoRe">${S.gameOk?"Riattiva":"Attivo"}</button></div>`:`<button class="btn ghost full" id="simBtn">🔒 Sblocca</button>`}`:""}`;
 }
 function reSet(){const v=$("v-set"),y=v.scrollTop;renderSet();v.scrollTop=y;}
 function addMascot(){let img=null,out=null,tm;
@@ -608,6 +622,8 @@ $("v-set").addEventListener("click",e=>{const b=e.target.closest("button");if(!b
  else if(b.id==="simBtn")simToggle();
  else if(b.dataset.dd)setDevDay(b.dataset.dd);
  else if(b.id==="devToday")setDevDay(null);
+ else if(b.id==="unlGame")unlockGame();
+ else if(b.id==="demoRe"){S.gameOk=false;S.demoN=0;save();demoUI();reSet();toast("Blocco di 3 carte riattivato");}
  else if(b.id==="devLock"){S.devDate=null;S.simOk=false;save();refreshGift();renderAdvent();reSet();}
  else if(b.dataset.th){S.theme=b.dataset.th;applyTheme();save();renderSet();react("cheer","Che stile!");}
  else if(b.id==="cDel"){S.cust.img=null;applyTheme();save();}
@@ -622,9 +638,9 @@ $("v-set").addEventListener("click",e=>{const b=e.target.closest("button");if(!b
 
 /* ================= REGALO DEI 5 MESI ================= */
 const unlocked=()=>now()>=D17;
-function refreshGift(){const n=Math.ceil((D17-now())/864e5),x=Math.ceil((new Date(2026,11,25)-now())/864e5),p=[];
+function refreshGift(){demoUI();const n=Math.ceil((D17-now())/864e5),x=Math.ceil((new Date(2026,11,25)-now())/864e5),p=[];
  if(x>0)p.push(`🎄 ${x} giorni a Natale`);else if(x===0)p.push("🎄 Oggi è Natale!");
- if(unlocked())p.push("🤍 Buoni 5 mesi!");else if(n>0)p.push(`🤍 ${n} giorni ai 5 mesi`);
+ if(unlocked())p.push("💗 Buoni 5 mesi!");else if(n>0)p.push(`💗 ${n} giorni ai 5 mesi`);
  $("sub").textContent=(S.devDate?"🛠 "+S.devDate.split("-").reverse().join("/")+" · ":"")+(p.join(" · ")||"Una carta alla volta, in due");
  $("giftSub").textContent=unlocked()?"Aperto! Toccami":now()>=D4?"Scrivete le lettere entro il 17 dicembre":"Si apre il 17 dicembre";}
 function giftModal(){
