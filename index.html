@@ -100,11 +100,64 @@ textarea{min-height:110px;resize:none}textarea:focus,input:focus{border-color:va
 #splash.on{display:flex;animation:fi .45s}@keyframes fi{from{opacity:0}}
 .sp{width:min(88vw,360px);padding:30px 22px 24px;text-align:center;border-color:var(--gold);background:var(--bg);transform-origin:0 0;transition:transform .7s cubic-bezier(.6,0,.2,1),opacity .7s ease-in}
 .sp .ic{font-size:4.4rem;animation:bob 2s ease-in-out infinite}.sp h2{font-size:1.5rem;margin:6px 0}.sp p{color:var(--mute);margin-bottom:16px;line-height:1.4}.sp small{display:block;margin-top:12px;color:var(--mute);font-size:.75rem}
-.adv{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.adv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 .day{position:relative;aspect-ratio:1;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:var(--glass);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font:600 1.1rem var(--serif);color:var(--ink);padding:0}
 .day small{font:400 .62rem var(--sans);color:var(--mute)}.day.lock{opacity:.4;filter:grayscale(.8)}.day.today{border-color:var(--gold);box-shadow:0 0 16px -6px var(--gold)}
 .day img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.day .dn{position:absolute;top:4px;left:7px;font:700 .75rem var(--sans);color:#fff;text-shadow:0 1px 4px #000;z-index:1}
 .day .gn{position:absolute;bottom:0;left:0;right:0;padding:12px 4px 3px;font:600 .6rem var(--sans);color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.7));z-index:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* ===== CHAT CON SBANG (bottone "liquid glass") ===== */
+#chatBtn{position:fixed;top:calc(env(safe-area-inset-top) + 10px);left:14px;z-index:45;width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;overflow:visible;
+background:linear-gradient(145deg,rgba(255,255,255,.3),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.35);-webkit-backdrop-filter:blur(14px) saturate(1.8);backdrop-filter:blur(14px) saturate(1.8);
+box-shadow:inset 0 1px 1px rgba(255,255,255,.65),inset 0 -8px 12px rgba(255,255,255,.07),0 8px 22px -8px rgba(0,0,0,.6);transition:transform .2s}
+#chatBtn:active{transform:scale(.92)}#chatBtn::before{content:"";position:absolute;top:3px;left:9px;right:9px;height:14px;border-radius:50%;background:linear-gradient(rgba(255,255,255,.5),transparent);pointer-events:none}
+#chatAv{width:34px;height:34px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center}#chatAv img{width:100%;height:100%;object-fit:cover}
+#chatBtn .dot{position:absolute;top:-1px;right:-1px;width:14px;height:14px;border-radius:50%;background:#ff3b30;border:2px solid var(--bg);display:none;box-shadow:0 0 8px #ff3b30}
+html.desk #chatBtn{left:32px;top:18px}
+#chat{position:fixed;inset:0;z-index:75;background:rgba(0,0,0,.45);opacity:0;visibility:hidden;transition:.3s}#chat.on{opacity:1;visibility:visible}
+.cp{width:min(100%,460px);height:100dvh;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);background:linear-gradient(160deg,rgba(255,255,255,.12),rgba(255,255,255,.02)),var(--bg);border-right:1px solid var(--line);transform:translateX(-30px) scale(.97);transform-origin:0 0;transition:.35s}
+#chat.on .cp{transform:none}
+.chd{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}.chd .av{width:40px;height:40px;border-radius:50%;overflow:hidden;background:var(--glass);border:1px solid var(--line);display:flex;align-items:center;justify-content:center}.chd .av img{width:100%;height:100%;object-fit:cover}
+.chd b{display:block}.chd small{color:var(--mute);font-size:.72rem}.chd .x{margin-left:auto;padding:8px;color:var(--mute)}
+#cmsgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scrollbar-width:none}#cmsgs::-webkit-scrollbar{display:none}
+.mg{max-width:84%;padding:10px 13px;border-radius:18px;font-size:.92rem;line-height:1.4;-webkit-user-select:text;user-select:text;white-space:pre-wrap}
+.mg.sb{align-self:flex-start;background:var(--glass);border:1px solid var(--line);border-bottom-left-radius:6px}.mg.ot{align-self:flex-start;background:var(--glass);border:1px solid var(--pcx);border-bottom-left-radius:6px}
+.mg.me{align-self:flex-end;background:linear-gradient(135deg,var(--acc2),var(--acc));color:#fff;border-bottom-right-radius:6px}
+.mg .who{display:block;font-weight:600;font-size:.72rem;color:var(--pcx);margin-bottom:2px}.mg small{display:block;opacity:.6;font-size:.64rem;margin-top:4px}
+.mg button{margin-top:8px;padding:7px 12px;border-radius:99px;background:var(--acc);color:#fff;font-size:.8rem;font-weight:600}
+.ctip{display:flex;align-items:center;gap:8px;padding:8px 14px;font-size:.72rem;color:var(--mute);border-top:1px solid var(--line)}.ctip button{flex:none;padding:6px 12px;border-radius:99px;background:var(--glass);border:1px solid var(--line);color:var(--ink);font-size:.74rem}
+.cin{display:flex;gap:8px;padding:8px 12px calc(10px + env(safe-area-inset-bottom))}.cin input{flex:1;padding:12px 14px;border-radius:99px;background:var(--glass);border:1px solid var(--line);font-size:16px;outline:none;-webkit-user-select:text;user-select:text}
+.cin button{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--acc2),var(--acc));color:#fff;font-size:1.2rem}
+/* ===== CALENDARIO: scatole regalo (liquid glass) e caselle speciali ===== */
+.day{background:linear-gradient(145deg,rgba(255,255,255,.2),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.22);-webkit-backdrop-filter:blur(14px) saturate(1.7);backdrop-filter:blur(14px) saturate(1.7);box-shadow:inset 0 1px 1px rgba(255,255,255,.45),0 6px 18px -10px rgba(0,0,0,.5)}
+.day.sp{background:linear-gradient(145deg,#f3cf7a,#c68a2a 55%,#a01f3c);border-color:#f3cf7a;box-shadow:0 0 22px -6px var(--gold),inset 0 1px 1px rgba(255,255,255,.6)}
+.day{min-width:0;min-height:0}.day .bx{position:absolute;inset:0;margin:auto;width:62%;height:62%}.bx *{stroke:none;stroke-width:0}
+.day .pl,.day .ck{position:absolute;right:5px;bottom:5px;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:700 .8rem var(--sans)}
+.day .pl{background:var(--acc);color:#fff}.day .ck{background:var(--gold);color:#241800}.day .lk{position:absolute;right:5px;top:4px;font-size:.7rem}
+#reveal{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 40%,rgba(120,20,40,.88),rgba(5,5,12,.95));-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;visibility:hidden;transition:.4s}
+#reveal.on{opacity:1;visibility:visible}.rv{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;width:min(86vw,420px);color:#fff}
+.rvs{position:relative;width:260px;height:260px}.rvbox,.rvimg{position:absolute;inset:0;margin:auto}.rvbox{width:200px;height:200px;animation:shk .7s ease-in-out,boxout .6s 1.75s forwards}.rvbox svg{width:100%;height:100%}
+.rvbox .lid{transform-box:fill-box;transform-origin:50% 100%;animation:lid .8s .75s cubic-bezier(.3,1.4,.5,1) forwards}
+.rvimg{width:100%;height:100%;object-fit:contain;opacity:0;filter:drop-shadow(0 0 22px rgba(233,180,76,.95));animation:pop 1s 1.05s forwards}
+.rvs::before{content:"";position:absolute;inset:-20px;border-radius:50%;background:radial-gradient(circle,rgba(233,180,76,.45),transparent 65%);opacity:0;animation:glow 1.6s 1.1s ease-out forwards}
+.rvn{font:600 1.35rem var(--serif);opacity:0;animation:fadein .6s 1.6s forwards}.rvn small{display:block;font:400 .78rem var(--sans);opacity:.7;margin-top:4px}.rvb{display:flex;gap:8px;opacity:0;animation:fadein .6s 1.9s forwards}
+.flk{position:fixed;top:-8vh;pointer-events:none;color:#fff;animation:fall linear forwards;z-index:91}
+@keyframes shk{0%,100%{transform:rotate(0)}15%{transform:rotate(-8deg)}35%{transform:rotate(8deg)}55%{transform:rotate(-6deg)}75%{transform:rotate(5deg)}}
+@keyframes lid{to{transform:translateY(-70px) rotate(-28deg);opacity:0}}@keyframes boxout{to{opacity:0;transform:translateY(50px) scale(.7)}}
+@keyframes pop{0%{transform:scale(0) rotate(-20deg);opacity:0}60%{transform:scale(1.2) rotate(6deg);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes glow{0%{opacity:0;transform:scale(.5)}50%{opacity:1}100%{opacity:.6;transform:scale(1.1)}}@keyframes fadein{to{opacity:1}}@keyframes fall{to{transform:translateY(112vh) rotate(360deg)}}
+.day{background:linear-gradient(145deg,rgba(255,255,255,.24),rgba(255,255,255,.08));border:1px solid rgba(255,255,255,.3)}
+.day.lock{opacity:1;filter:none}.day.lock .bx{opacity:.5;filter:grayscale(.7)}#advTabs{margin-bottom:6px}
+/* ===== CALENDARIO: caselle quadrate (metodo del padding, niente aspect-ratio) ===== */
+.adv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:start}
+.gt{position:relative;display:block;width:100%;height:0;padding:0 0 calc(100% - 2px);border-radius:16px;overflow:hidden;cursor:pointer;-webkit-user-select:none;user-select:none;
+background:linear-gradient(145deg,rgba(255,255,255,.24),rgba(255,255,255,.08));border:1px solid rgba(255,255,255,.3);
+-webkit-backdrop-filter:blur(14px) saturate(1.7);backdrop-filter:blur(14px) saturate(1.7);box-shadow:inset 0 1px 1px rgba(255,255,255,.45),0 6px 18px -10px rgba(0,0,0,.5)}
+.gt.sp{background:linear-gradient(145deg,#f3cf7a,#c68a2a 55%,#a01f3c);border-color:#f3cf7a;box-shadow:0 0 22px -6px var(--gold),inset 0 1px 1px rgba(255,255,255,.6)}
+.gt.today{border-color:var(--gold);box-shadow:0 0 16px -6px var(--gold)}
+.gt .dn{position:absolute;top:5px;left:8px;font:700 .8rem var(--sans);color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.7)}
+.gt .bx{position:absolute;inset:0;margin:auto;width:62%;height:62%}.gt.lock .bx{opacity:.5;filter:grayscale(.7)}
+.gt .pl,.gt .ck{position:absolute;right:5px;bottom:5px;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:700 .8rem var(--sans)}
+.gt .pl{background:var(--acc);color:#fff}.gt .ck{background:var(--gold);color:#241800}.gt .lk{position:absolute;right:5px;top:4px;font-size:.7rem}
 /* ===== VERSIONE COMPUTER (rilevata in automatico, modificabile nelle Opzioni) ===== */
 html.desk{font-size:118%}html.desk body{padding:0}
 html.desk #app{max-width:none;width:100%;display:grid;grid-template-columns:260px 1fr;grid-template-rows:auto 1fr;column-gap:28px;padding:0 32px}
@@ -115,7 +168,7 @@ html.desk main{grid-row:2;grid-column:2}
 html.desk .view{max-width:1400px;margin:0 auto;padding:10px 8px 40px}
 html.desk .deckwrap{max-height:680px}html.desk .txt{font-size:1.75rem}
 html.desk #couponList,html.desk #favList,html.desk #logList,html.desk #customList{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));column-gap:14px;align-items:start}
-html.desk #customList h3{grid-column:1/-1}html.desk .adv{grid-template-columns:repeat(12,1fr)}
+html.desk #customList h3{grid-column:1/-1}html.desk .adv{grid-template-columns:repeat(12,minmax(0,1fr))}
 html.desk #modal{align-items:center}html.desk .sheet{border-radius:26px;max-width:640px}
 html.desk button:not(:disabled):hover{filter:brightness(1.12)}
 /* ===== MODALE, FX, MASCOTTE ===== */
@@ -139,7 +192,7 @@ html.desk button:not(:disabled):hover{filter:brightness(1.12)}
   <header><h1>Sbangy</h1><p id="sub"></p></header>
   <main>
     <section class="view on" id="v-draw">
-      <button class="gift glass" id="giftBtn"><span style="font-size:1.2rem">🎁</span><span><b>Il regalo dei 5 mesi</b><small id="giftSub"></small></span></button>
+      <button class="gift glass" id="giftBtn"><span style="font-size:1.2rem">🎁</span><span><b>La lettera dei 5 mesi</b><small id="giftSub"></small></span></button>
       <div class="chips" id="chips"></div>
       <div class="hint" id="hint">Tocca il mazzo (o scorri verso l'alto) per pescare</div>
       <div class="stage" id="stage"><div class="deckwrap">
@@ -154,7 +207,7 @@ html.desk button:not(:disabled):hover{filter:brightness(1.12)}
         <button class="btn ghost" id="timerBtn" style="display:none">⏱</button>
       </div>
     </section>
-    <section class="view" id="v-advent"><h2>Calendario dell'Avvento</h2><p class="hint" style="text-align:left">Ogni giorno aggiungi il regalino che trovi: una foto e un nome. I giorni futuri restano bloccati.</p><div class="adv" id="advGrid"></div></section>
+    <section class="view" id="v-advent"><h2>Calendario dell'Avvento</h2><p class="hint" style="text-align:left">Ogni giorno aggiungi il regalino che trovi: una foto e un nome. Nell'altra sezione trovi quelli che arrivano dal suo file.</p><div class="chips" id="advTabs"></div><div class="adv" id="advGrid"></div></section>
     <section class="view" id="v-coupons"><h2>I nostri coupon</h2><div id="couponList"></div></section>
     <section class="view" id="v-diary"><h2>Diario dei momenti</h2><div class="stats" id="stats"></div><h3>Traguardi insieme</h3><div class="ms" id="ms"></div><h3>Preferite</h3><div id="favList"></div><h3>Momenti</h3><div id="logList"></div></section>
     <section class="view" id="v-create">
@@ -170,8 +223,9 @@ html.desk button:not(:disabled):hover{filter:brightness(1.12)}
   </main>
   <nav class="glass" id="nav"></nav>
 </div>
-<div id="splash"><div class="sp glass" id="spCard"><div class="ic">🎁</div><h2>Il regalo dei 5 mesi</h2><p id="spS"></p><button class="btn" id="spOpen">Apri il regalo</button><small>Tocca fuori per continuare</small></div></div>
+<div id="splash"><div class="sp glass" id="spCard"><div class="ic">🎁</div><h2>La lettera dei 5 mesi</h2><p id="spS"></p><button class="btn" id="spOpen">Apri la lettera</button><small>Tocca fuori per continuare</small></div></div>
 <div id="mascot"><div id="bub"></div></div>
+<button id="chatBtn" aria-label="Chat con Sbang"><span id="chatAv"></span><i class="dot" id="chatDot"></i></button><div id="chat"></div><div id="reveal"></div>
 <canvas id="fx"></canvas><div id="toast" class="glass"></div><div id="modal"><div class="sheet" id="sheet"></div></div>
 
 <script>
@@ -253,13 +307,15 @@ const NAV=[["draw","Pesca"],["coupons","Coupon","cpn"],["advent","Avvento","gift
 
 /* ================= STATO + LOCALSTORAGE ================= */
 const KEY="sbangy-v1";
-let S={names:{a:"Ginevra",b:"Lorenzo"},me:null,turn:"a",theme:"natale",lvl:3,sound:true,big:false,hc:false,mascots:[{id:"crab",n:"Sbang",s:110,p:null}],mSel:"crab",advent:{},dev:"auto",devDate:null,demoN:0,gameOk:false,mPos:null,
+let S={names:{a:"Ginevra",b:"Lorenzo"},me:null,turn:"a",theme:"natale",lvl:3,sound:true,big:false,hc:false,mascots:[{id:"crab",n:"Sbang",s:110,p:null}],mSel:"crab",advent:{},dev:"auto",devDate:null,demoN:0,gameOk:false,chat:[],adv:{a:{},b:{}},notif:{},lastRem:0,resetDone:false,mPos:null,
  custom:[],favs:[],coupons:{},log:[],done:0,pass:{},filter:"all",cust:{acc:"#f4a6b8",acc2:"#d6304f",bg:"#0f111a",ink:"#f6eef0",img:null},myLetter:"",theirLetter:"",sim:false,mile:0};
 try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||"{}"));}catch(e){}
 if(!S.mascots||!S.mascots.length)S.mascots=[{id:"crab",n:"Sbang",s:110,p:null}];
 if(S.mPhoto){S.mascots.push({id:"m"+Date.now(),n:S.mName||"Foto",s:S.mSize||110,p:S.mPhoto});S.mPhoto=null;}
 S.sim=false;if(S.devDate&&(!S.simOk||S.me!=="b"))S.devDate=null; // sviluppatore: solo sul telefono di Lorenzo, con password
-if(!S.advent)S.advent={};
+if(!S.adv)S.adv={a:{},b:{}};
+if(S.advent&&Object.keys(S.advent).length){const w0=S.me||"a";S.adv[w0]=Object.assign({},S.advent,S.adv[w0]||{});} // vecchi regalini: finiscono nella sezione di chi usa questo telefono
+delete S.advent;
 S.mascots.forEach(m=>{if(m.id==="crab"&&m.n==="Sbangy")m.n="Sbang";}); // la modalità prova richiede la password
 let svT;const save=()=>{clearTimeout(svT);svT=setTimeout(saveNow,150);}; // salvataggio raggruppato
 function saveNow(){clearTimeout(svT);try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){
@@ -291,26 +347,27 @@ function saveFile(t,name){const a=document.createElement("a");a.href=URL.createO
 // WhatsApp: i dati completi (con foto) sono troppo grandi per un messaggio, quindi vanno come FILE allegato dal foglio di condivisione
 async function waShare(code,name){name=name||"sbangy-dati.txt";const f=new File([code],name,{type:"text/plain"});
  try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:"Dati di Sbangy"});return;}}catch(e){if(e&&e.name==="AbortError")return;}
- if(code.length<1800){location.href="https://wa.me/?text="+encodeURIComponent(code);return;}
  saveFile(code,name);toast("File salvato: allegalo in WhatsApp");}
-const buildShare=()=>({v:2,from:S.me,cards:S.custom,favs:S.favs,coupons:S.coupons,mascots:S.mascots,log:S.log,done:S.done,advent:S.advent,letter:S.myLetter,theme:S.theme,cust:S.cust});
+const buildShare=()=>({v:2,from:S.me,msgs:S.chat.filter(m=>m.mine).slice(-60).map(m=>({id:m.id,t:m.t,text:m.text})),cards:S.custom,favs:S.favs,coupons:S.coupons,mascots:S.mascots,log:S.log,done:S.done,advent:ADV(myW()),letter:S.myLetter,theme:S.theme,cust:S.cust});
 function mergeShare(sh,rep){
  const nu=(a,k)=>{const m=new Set(a.map(k));return x=>!m.has(k(x));};
- if(rep){S.custom=sh.cards||[];S.favs=sh.favs||[];S.coupons=sh.coupons||{};if(sh.mascots&&sh.mascots.length)S.mascots=sh.mascots;S.log=sh.log||[];S.advent=sh.advent||{};S.done=sh.done||0;if(sh.theme)S.theme=sh.theme;if(sh.cust)S.cust=sh.cust;}
+ if(rep){S.custom=sh.cards||[];S.favs=sh.favs||[];S.coupons=sh.coupons||{};if(sh.mascots&&sh.mascots.length)S.mascots=sh.mascots;S.log=sh.log||[];S.done=sh.done||0;if(sh.theme)S.theme=sh.theme;if(sh.cust)S.cust=sh.cust;}
  else{(sh.cards||[]).filter(nu(S.custom,c=>c.id)).forEach(c=>S.custom.push(c));
   (sh.favs||[]).forEach(f=>{if(!S.favs.includes(f))S.favs.push(f);});
   Object.entries(sh.coupons||{}).forEach(([k,v])=>{const l=S.coupons[k];if(!l)S.coupons[k]=v;else if(v.used)l.used=true;});
   (sh.mascots||[]).filter(nu(S.mascots,m=>m.id)).forEach(m=>S.mascots.push(m));
   (sh.log||[]).filter(nu(S.log,l=>l.d+l.t)).forEach(l=>S.log.push(l));S.log.sort((a,b)=>b.d-a.d);
-  Object.entries(sh.advent||{}).forEach(([d,g])=>{if(!S.advent[d])S.advent[d]=g;});S.done=Math.max(S.done,sh.done||0);}
- if(sh.letter!=null&&sh.from!==S.me)S.theirLetter=sh.letter; // la lettera dell'altro arriva insieme ai dati
+  if(sh.from&&sh.from!==S.me&&sh.advent){const A=ADV(sh.from);Object.entries(sh.advent).forEach(([d,g])=>{A[d]=g;});} /* i regali dell'altro vanno nella sua sezione */S.done=Math.max(S.done,sh.done||0);}
+ if(sh.msgs&&sh.from&&sh.from!==S.me){let n=0;sh.msgs.forEach(m=>{const id=sh.from+m.id;if(!S.chat.some(x=>x.id===id)){S.chat.push({id,t:m.t,from:sh.from,text:m.text,read:false});n++;}});if(n)toast(n+" nuovi messaggi in chat");}
+ if(sh.letter!=null&&sh.from!==S.me){if(!S.theirLetter)sbMsg("💌 È arrivata la lettera di "+(S.names[sh.from]||"lui/lei")+"! Resta sigillata fino al 17 dicembre.",null,"ltin");S.theirLetter=sh.letter;}
+ updateChatDot(); // la lettera dell'altro arriva insieme ai dati
  if(!S.mascots.some(m=>m.id===S.mSel))S.mSel=S.mascots[0].id;S.mile=[10,25,50,100].filter(m=>S.done>=m).length;
  saveNow();closeM();applyTheme();renderChips();renderTurn();updateBadge();refreshGift();initMascot();renderAdvent();reSet();toast(rep?"Dati sostituiti":"Dati uniti");confetti(60);react("cheer","Dati ricevuti! 📦");}
 function importAsk(sh){const c=o=>Object.keys(o||{}).length;
  modal(`<h2>📦 Dati ricevuti</h2><p>${(sh.cards||[]).length} carte create · ${(sh.favs||[]).length} preferite · ${c(sh.coupons)} coupon · ${(sh.mascots||[]).filter(m=>m.id!=="crab").length} mascotte · ${c(sh.advent)} regalini · ${(sh.log||[]).length} momenti nel diario</p>
- <button class="btn full" id="iMerge">Unisci ai miei dati</button><button class="btn ghost full" id="iRep">Sostituisci i miei dati</button>
- <p style="font-size:.78rem;color:var(--mute);margin-top:10px">"Unisci" aggiunge ciò che manca senza cancellare nulla. "Sostituisci" serve per ripristinare un tuo backup.</p>`);
- $("iMerge").onclick=()=>mergeShare(sh,false);$("iRep").onclick=()=>mergeShare(sh,true);}
+ <button class="btn full" id="iMerge">Unisci ai miei dati</button>
+ <p style="font-size:.78rem;color:var(--mute);margin-top:10px">Aggiungo ciò che manca ai tuoi dati senza cancellare nulla. I regali di quella persona vanno nella sua sezione.</p>`);
+ $("iMerge").onclick=()=>mergeShare(sh,false);}
 function doImport(raw){const o=dec(raw);
  if(!o){toast(/SBANGY1:/.test(raw)?"Codice incompleto: copialo per intero":"Non è un codice o un file di Sbangy");return;}
  if(o.share){importAsk(o.share);return;}
@@ -574,7 +631,7 @@ function renderSet(){
  ${cur().id!=="crab"?'<button class="btn ghost full" id="mDel">Elimina questa mascotte</button>':""}
  <h3>Dispositivo</h3><select id="dev"><option value="auto" ${S.dev==="auto"?"selected":""}>Automatico</option><option value="phone" ${S.dev==="phone"?"selected":""}>Telefono</option><option value="desktop" ${S.dev==="desktop"?"selected":""}>Computer</option></select>
  <h3>Accessibilità</h3><div class="row"><span>Testo grande</span><input type="checkbox" id="big" ${S.big?"checked":""}></div><div class="row"><span>Contrasto alto</span><input type="checkbox" id="hc" ${S.hc?"checked":""}></div>
- <h3>Dati</h3><p style="font-size:.8rem;color:var(--mute);margin-bottom:8px;line-height:1.4">${storState()}</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn full" id="expW">💬 Invia tutti i dati su WhatsApp</button><button class="btn ghost full" id="expF">💾 Salva tutti i dati in un file</button><button class="btn ghost full" id="expC">📋 Copia solo le carte create</button></div><p style="font-size:.76rem;color:var(--mute);margin:8px 0;line-height:1.4">I dati comprendono carte create, preferite, coupon, mascotte, regalini, diario e la tua lettera.</p><button class="btn ghost full" id="impFB">📂 Importa da file</button><input type="file" id="impF" style="display:none"><label>Oppure incolla un codice ricevuto</label><textarea id="impT" style="min-height:70px"></textarea><div style="display:flex;gap:8px;margin-top:8px"><button class="btn ghost" id="pasteB">📥 Incolla</button><button class="btn" id="imp" style="flex:1">Importa</button></div>
+ <h3>Dati</h3><p style="font-size:.8rem;color:var(--mute);margin-bottom:8px;line-height:1.4">${storState()}</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn full" id="expW">💬 Invia tutti i dati su WhatsApp</button><button class="btn ghost full" id="expF">💾 Salva tutti i dati in un file</button></div><p style="font-size:.76rem;color:var(--mute);margin:8px 0;line-height:1.4">I dati comprendono carte create, preferite, coupon, mascotte, regalini, diario e la tua lettera.</p><button class="btn ghost full" id="impFB">📂 Importa da file</button><input type="file" id="impF" style="display:none">
  ${S.me==="b"?`<h3>🛠 Modalità sviluppatore</h3>${S.simOk?`<label>Teletrasportati al giorno</label><input type="date" id="devD" value="${S.devDate||""}"><div class="chips" style="flex-wrap:wrap;margin-top:8px">${[["2026-12-01","1 dic"],["2026-12-04","4 dic"],["2026-12-17","17 dic"],["2026-12-24","24 dic"],["2026-12-25","25 dic"]].map(a=>`<button class="chip" data-dd="${a[0]}"><i></i>${a[1]}</button>`).join("")}</div><div style="display:flex;gap:8px"><button class="btn ghost" id="devToday" style="flex:1">Torna a oggi</button><button class="btn ghost" id="devLock" style="flex:1">Blocca</button></div><div class="row"><span>Blocco 3 carte (fino al 9)</span><button class="pill" id="demoRe">${S.gameOk?"Riattiva":"Attivo"}</button></div>`:`<button class="btn ghost full" id="simBtn">🔒 Sblocca</button>`}`:""}`;
 }
 function reSet(){const v=$("v-set"),y=v.scrollTop;renderSet();v.scrollTop=y;}
@@ -590,18 +647,37 @@ function addMascot(){let img=null,out=null,tm;
 function askPw(cb){modal(`<h2>🔒 Password</h2><p>Serve la password per continuare.</p><input type="password" id="pw" autocomplete="off"><button class="btn full" id="pwGo">Entra</button>`);
  $("pwGo").onclick=()=>{if(h53($("pw").value)===PWH){closeM();cb();}else{toast("Password errata");react("wave","Nope!");}};}
 const tf=n=>n>=60?Math.floor(n/60)+":"+String(n%60).padStart(2,"0"):n+"s";
-const dayReached=d=>now()>=new Date(2026,11,d);
-function renderAdvent(){let h="";const t=now();
- for(let d=1;d<=24;d++){const g=S.advent[d],ok=dayReached(d),td=t.getFullYear()===2026&&t.getMonth()===11&&t.getDate()===d;
-  h+=`<button class="day ${ok?"":"lock"} ${td?"today":""}" data-d="${d}">${g?`<img src="${g.p}" alt=""><span class="dn">${d}</span><span class="gn">${esc(g.n)}</span>`:ok?`<span style="font-size:1.5rem;color:var(--acc)">+</span><small>${d} dic</small>`:`🔒<small>${d} dic</small>`}</button>`;}
+const BOX='<svg class="bx" viewBox="0 0 64 64"><g class="body"><rect x="10" y="27" width="44" height="29" rx="4" fill="#b8243b"/><rect x="29" y="27" width="6" height="29" fill="#e9b44c"/></g><g class="lid"><rect x="7" y="19" width="50" height="11" rx="3" fill="#dc3550"/><rect x="29" y="19" width="6" height="11" fill="#f3cf7a"/><ellipse cx="23" cy="15" rx="8" ry="5" transform="rotate(-22 23 15)" fill="#f3cf7a"/><ellipse cx="41" cy="15" rx="8" ry="5" transform="rotate(22 41 15)" fill="#f3cf7a"/><circle cx="32" cy="17" r="3.4" fill="#e9b44c"/></g></svg>';
+const dayReached=d=>now()>=new Date(2026,11,d),SPECIAL=[1,17,24]; // caselle 1, 17 e 24: i regali più importanti
+const myW=()=>S.me||"a",othW=()=>myW()==="a"?"b":"a",ADV=w=>S.adv[w]||(S.adv[w]={});let advView=null;
+function renderAdvent(){const me=myW(),w=advView||me,G=ADV(w),t=now();advView=w;
+ $("advTabs").innerHTML=[me,othW()].map(k=>`<button class="chip ${w===k?"on":""}" data-w="${k}" style="--c:${PC[k]}"><i></i>${k===me?"I miei regali":"Regali di "+esc(S.names[k])}</button>`).join("");
+ let h="";
+ for(let d=1;d<=24;d++){const g=G[d],ok=dayReached(d),td=t.getFullYear()===2026&&t.getMonth()===11&&t.getDate()===d;
+  h+=`<div role="button" tabindex="0" class="gt ${ok?"":"lock"} ${td?"today":""} ${SPECIAL.includes(d)?"sp":""}" data-d="${d}"><span class="dn">${d}</span>${BOX}${g?'<span class="ck">✓</span>':!ok?'<span class="lk">🔒</span>':w===me?'<span class="pl">+</span>':""}</div>`;}
  $("advGrid").innerHTML=h;}
-$("advGrid").addEventListener("click",e=>{const b=e.target.closest(".day");if(!b)return;const d=+b.dataset.d;
- if(!dayReached(d)){toast("Si sblocca il "+d+" dicembre 🔒");react("wave","Non ancora!");snd(200,.1);return;}advModal(d);});
-function advModal(d){const g=S.advent[d];let ph=g?g.p:null;const pv=x=>`<img src="${x}" alt="" style="max-width:100%;max-height:200px;border-radius:14px">`;
- modal(`<h2>🎁 Regalino del ${d} dicembre</h2><label>Cosa hai trovato?</label><input type="text" id="adN" maxlength="40" placeholder="Es. Cioccolatino alla nocciola" value="${g?esc(g.n):""}"><label>Foto</label><input type="file" id="adP" accept="image/*"><div id="adPrev" style="text-align:center;padding:10px">${ph?pv(ph):""}</div><button class="btn full" id="adGo">Salva</button>${g?'<button class="btn ghost full" id="adDel">Rimuovi</button>':""}`);
- $("adP").onchange=e=>{const f=e.target.files[0];if(f)readImg(f,320,x=>{ph=x;$("adPrev").innerHTML=pv(x);});};
- $("adGo").onclick=()=>{if(!ph){toast("Aggiungi una foto");return;}S.advent[d]={n:$("adN").value.trim()||"Regalino",p:ph};saveNow();closeM();renderAdvent();confetti(60);react("cheer","Che regalino! 🎁");};
- if(g)$("adDel").onclick=()=>{delete S.advent[d];saveNow();closeM();renderAdvent();};}
+$("advTabs").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;advView=b.dataset.w;renderAdvent();snd(520,.06);});
+$("advGrid").addEventListener("click",e=>{const b=e.target.closest(".gt");if(!b)return;const d=+b.dataset.d,w=advView||myW();
+ if(!dayReached(d)){toast("Si sblocca il "+d+" dicembre 🔒");react("wave","Non ancora!");snd(200,.1);return;}
+ if(ADV(w)[d])revealGift(w,d);else if(w===myW())advModal(d);else toast(S.names[w]+" non ha ancora condiviso questo regalino");});
+function revealGift(w,d){const g=ADV(w)[d],o=$("reveal"),mine=w===myW();
+ o.innerHTML=`<div class="rv"><div class="rvs"><div class="rvbox">${BOX}</div><img class="rvimg" src="${g.p}" alt=""></div><div class="rvn">${esc(g.n)}<small>Regalino del ${d} dicembre${mine?"":" · di "+esc(S.names[w])}</small></div><div class="rvb">${mine?'<button class="btn ghost" id="rvEdit">Modifica</button>':""}<button class="btn" id="rvOk">Che bello</button></div></div>`;
+ o.classList.add("on");snd(300,.15);buzz([20,60,20]);
+ for(let i=0;i<18;i++){const f=document.createElement("span");f.className="flk";f.textContent=["❄","✦","❅"][i%3];f.style.cssText=`left:${Math.random()*100}vw;font-size:${10+Math.random()*16}px;animation-duration:${4+Math.random()*4}s;animation-delay:${Math.random()*2}s;opacity:${.4+Math.random()*.6}`;o.appendChild(f);}
+ setTimeout(()=>{if(o.classList.contains("on")){confetti(110);snd(740,.3);react("cheer","Guarda che bello! 🎁");}},1050);
+ const close=()=>{o.classList.remove("on");setTimeout(()=>{o.innerHTML="";},400);};
+ $("rvOk").onclick=close;if(mine)$("rvEdit").onclick=()=>{close();advModal(d);};}
+const smallPng=(c,m)=>{const k=Math.min(1,m/Math.max(c.width,c.height)),o=document.createElement("canvas");o.width=Math.max(1,Math.round(c.width*k));o.height=Math.max(1,Math.round(c.height*k));o.getContext("2d").drawImage(c,0,0,o.width,o.height);return o.toDataURL("image/png");};
+function advModal(d){const G=ADV(myW()),g=G[d],keep=g?g.p:null;let img=null,out=null,tm;
+ modal(`<h2>🎁 Regalino del ${d} dicembre</h2><label>Cosa hai trovato?</label><input type="text" id="adN" maxlength="40" placeholder="Es. Cioccolatino alla nocciola" value="${g?esc(g.n):""}">
+ <label>Foto</label><input type="file" id="adP" accept="image/*"><div class="chk" id="adPrev">${keep?`<img src="${keep}" alt="" style="max-width:100%;max-height:170px">`:'<small style="color:#fff">Anteprima</small>'}</div>
+ <label>Precisione del ritaglio</label><input type="range" id="adT" min="0" max="80" value="38" style="width:100%"><p style="font-size:.78rem;color:var(--mute)">Tolgo lo sfondo dalla foto. Resta sfondo? Alza. Taglia il regalo? Abbassa.</p>
+ <button class="btn full" id="adGo">Salva</button>${g?'<button class="btn ghost full" id="adDel">Rimuovi</button>':""}`);
+ const run=()=>{if(!img)return;out=cutCanvas(img,+$("adT").value);out.style.cssText="max-width:100%;max-height:170px";$("adPrev").innerHTML="";$("adPrev").appendChild(out);};
+ $("adP").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{img=i;run();};i.src=r.result;};r.readAsDataURL(f);};
+ $("adT").oninput=()=>{clearTimeout(tm);tm=setTimeout(run,120);};
+ $("adGo").onclick=()=>{const pn=out?smallPng(out,200):keep;if(!pn){toast("Aggiungi una foto");return;}G[d]={n:$("adN").value.trim()||"Regalino",p:pn};saveNow();closeM();renderAdvent();confetti(60);react("cheer","Che regalino! 🎁");};
+ if(g)$("adDel").onclick=()=>{delete G[d];saveNow();closeM();renderAdvent();};}
 function simToggle(){askPw(()=>{S.simOk=true;save();reSet();react("cheer","Modalità sviluppatore sbloccata");});}
 function setDevDay(v){S.devDate=v||null;save();refreshGift();renderAdvent();reSet();if(v)toast("Teletrasportato al "+v.split("-").reverse().join("/"));react("cheer",v?"Wooosh! ⏳":"Si torna a oggi");}
 $("v-set").addEventListener("input",e=>{const i=e.target.id;
@@ -640,7 +716,7 @@ $("v-set").addEventListener("click",e=>{const b=e.target.closest("button");if(!b
 const unlocked=()=>now()>=D17;
 function refreshGift(){demoUI();const n=Math.ceil((D17-now())/864e5),x=Math.ceil((new Date(2026,11,25)-now())/864e5),p=[];
  if(x>0)p.push(`🎄 ${x} giorni a Natale`);else if(x===0)p.push("🎄 Oggi è Natale!");
- if(unlocked())p.push("💗 Buoni 5 mesi!");else if(n>0)p.push(`💗 ${n} giorni ai 5 mesi`);
+ if(unlocked())p.push("🤍 Buoni 5 mesi!");else if(n>0)p.push(`🤍 ${n} giorni ai 5 mesi`);
  $("sub").textContent=(S.devDate?"🛠 "+S.devDate.split("-").reverse().join("/")+" · ":"")+(p.join(" · ")||"Una carta alla volta, in due");
  $("giftSub").textContent=unlocked()?"Aperto! Toccami":now()>=D4?"Scrivete le lettere entro il 17 dicembre":"Si apre il 17 dicembre";}
 function giftModal(){
@@ -651,18 +727,16 @@ function giftModal(){
   <div class="ticket"><div class="t">${GIFT.t}<small>Aggiunto ai vostri coupon</small></div></div><button class="btn full" id="gClose">Che bello</button>`);
   confetti(160);react("cheer","Auguri!!! 🎉");snd(880,.4);$("gClose").onclick=closeM;return;}
  const o=S.me==="a"?"b":"a",ok=S.myLetter&&S.theirLetter;
- modal(`<h2>🎁 Regalo dei 5 mesi</h2><p>Scrivi una lettera per ${esc(S.names[o]||"l'altro")}: resterà sigillata fino al 17 dicembre.</p>
+ modal(`<h2>💌 Lettera dei 5 mesi</h2><p>Scrivi una lettera per ${esc(S.names[o]||"l'altro")}: resterà sigillata fino al 17 dicembre.</p>
   ${S.me?"":'<p style="color:var(--gold)">Prima scegli nelle impostazioni di chi è questo telefono.</p>'}
   <textarea id="lt" placeholder="Caro amore…">${esc(S.myLetter)}</textarea><button class="btn ghost" id="micL" style="margin-top:8px">🎙 Detta</button>
-  <button class="btn full" id="lSave">Sigilla la lettera</button><button class="btn ghost full" id="lSend">💬 Invia a ${esc(S.names[o]||"lui/lei")} su WhatsApp</button><button class="btn ghost full" id="lCopy">📋 Copia la lettera</button>
-  <label>Incolla qui la lettera ricevuta</label><textarea id="lIn" style="min-height:70px"></textarea><button class="btn ghost full" id="lPaste">📥 Incolla</button><button class="btn full" id="lImp">Importa lettera</button>
+  <button class="btn full" id="lSave">Sigilla la lettera</button><button class="btn ghost full" id="lSend">💬 Invia a ${esc(S.names[o]||"lui/lei")} su WhatsApp</button><button class="btn ghost full" id="lFile">📂 Importa il file ricevuto</button><input type="file" id="lFileIn" style="display:none">
   <p style="margin-top:12px">${S.myLetter?"✅":"⬜"} la tua lettera &nbsp; ${S.theirLetter?"✅":"⬜"} la sua lettera ${ok?"<br>Tutto pronto: si apre il 17 dicembre!":""}</p>`);
  mic($("lt"),$("micL"));
- $("lCopy").onclick=()=>{S.myLetter=$("lt").value.trim();save();if(!S.myLetter){toast("Scrivi prima la lettera");return;}copyText(enc({letter:S.myLetter}));};
- $("lPaste").onclick=()=>pasteInto($("lIn"));
  $("lSave").onclick=()=>{S.myLetter=$("lt").value.trim();save();toast("Lettera sigillata");confetti(40);giftModal();};
- $("lSend").onclick=()=>{S.myLetter=$("lt").value.trim();save();if(!S.myLetter){toast("Scrivi prima la lettera");return;}waShare(enc({letter:S.myLetter}),"lettera-sbangy.txt");};
- $("lImp").onclick=()=>{const d=dec($("lIn").value);const L=d&&(d.letter!=null?d.letter:d.share?d.share.letter:null);if(L==null){toast("Codice non valido");return;}S.theirLetter=L;save();toast("Lettera ricevuta, sigillata!");giftModal();};}
+ $("lSend").onclick=()=>{S.myLetter=$("lt").value.trim();save();if(!S.myLetter){toast("Scrivi prima la lettera");return;}waShare(enc({share:buildShare()}),"sbangy-dati.txt");};
+ $("lFile").onclick=()=>$("lFileIn").click();
+ $("lFileIn").onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>doImport(String(rd.result));rd.readAsText(f);};}
 $("giftBtn").addEventListener("click",()=>{react("cheer","Una sorpresa!");giftModal();});
 
 /* ================= CORIANDOLI ================= */
@@ -675,12 +749,12 @@ function tick(){cx.clearRect(0,0,innerWidth,innerHeight);
  P=P.filter(p=>p.l>0&&p.y<innerHeight+20);raf=P.length?requestAnimationFrame(tick):0;}
 ["gesturestart","gesturechange"].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault()));
 
-addEventListener("pagehide",saveNow);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveNow();});
+addEventListener("pagehide",saveNow);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveNow();else{dailyMsgs();maybeReminder();}});
 /* ================= AVVIO ================= */
 // Banner grande del regalo a ogni apertura: dopo qualche secondo (o un tocco) rimpicciolisce e si posa in alto
 function showSplash(){
  const n=Math.ceil((D17-now())/864e5),pend=now()>=D4&&!unlocked()&&!(S.myLetter&&S.theirLetter);
- $("spS").textContent=unlocked()?"È arrivato il giorno! Aprilo adesso 💗":pend?"Mancano ancora le lettere: scrivetele entro il 17 dicembre":now()>=D4?"Tutto pronto: si apre il 17 dicembre":`Si apre il 17 dicembre · mancano ${Math.max(n,0)} giorni`;
+ $("spS").textContent=unlocked()?"È arrivato il giorno! Aprila adesso 💗":pend?"Mancano ancora le lettere: scrivetele entro il 17 dicembre":now()>=D4?"Tutto pronto: si apre il 17 dicembre":`Si apre il 17 dicembre · mancano ${Math.max(n,0)} giorni`;
  const sp=$("splash"),c=$("spCard");let done=false,tm;sp.classList.add("on");
  const out=open=>{if(done)return;done=true;clearTimeout(tm);const a=c.getBoundingClientRect(),b=$("giftBtn").getBoundingClientRect();
   c.style.transform=`translate(${b.left-a.left}px,${b.top-a.top}px) scale(${b.width/a.width},${b.height/a.height})`;c.style.opacity="0";sp.style.opacity="0";
@@ -692,12 +766,53 @@ function applyDev(){document.documentElement.classList.toggle("desk",isDesk());M
 addEventListener("resize",applyDev);
 document.addEventListener("keydown",e=>{if(e.code!=="Space"||!document.documentElement.classList.contains("desk")||$("modal").classList.contains("on"))return;
  if(/INPUT|TEXTAREA|SELECT|BUTTON/.test(document.activeElement.tagName)||!$("v-draw").classList.contains("on"))return;e.preventDefault();draw();});
-function start(){applyDev();applyTheme();renderNav();renderChips();renderTurn();refreshGift();initMascot();
+/* ================= CHAT CON SBANG ================= */
+function sbMsg(text,act,key){if(key){if(S.notif[key])return;S.notif[key]=1;}
+ S.chat.push({id:"s"+Date.now()+Math.random().toString(36).slice(2,5),t:Date.now(),from:"sbang",text,act:act||null,read:false});
+ if(S.chat.length>120)S.chat=S.chat.slice(-120);save();updateChatDot();}
+const updateChatDot=()=>{const d=$("chatDot");if(d)d.style.display=S.chat.some(m=>!m.read&&!m.mine)?"block":"none";};
+function updateChatBtn(){const src=mimg(cur());$("chatAv").innerHTML=src?`<img src="${src}" alt="">`:"🦀";}
+const _im0=initMascot;initMascot=function(){_im0();updateChatBtn();};
+function dailyMsgs(){const t=now(),y=t.getFullYear(),m=t.getMonth(),d=t.getDate(),k=y+"-"+(m+1)+"-"+d;
+ if(y===2026&&m===11&&d>=1&&d<=24&&!ADV(myW())[d])sbMsg(`🎁 La casella del ${d} dicembre è aperta! Hai trovato il regalino di oggi? Aggiungilo al calendario.`,"advent","adv"+d);
+ if(now()>=D4&&!unlocked()&&!(S.myLetter&&S.theirLetter))sbMsg("💌 Ricordati di scrivere la tua lettera per il 17 dicembre e di scambiarvi i file!","gift","lt"+k);
+ if(unlocked())sbMsg("🎉 È il 17 dicembre! La lettera dei 5 mesi si è aperta: vieni a leggerla.","gift","g17");}
+function maybeReminder(){if(!S.me||Date.now()-S.lastRem<6*3600e3)return;const A=S.names.a,B=S.names.b;
+ const L=S.me==="b"?[`Ricordati sempre che ${A} ti vuole bene 💗`,`${A} pensa a te più spesso di quanto immagini.`,`Un pensiero gentile per ${A} oggi? Le farebbe tantissimo piacere.`,`Sei fortunato: ${A} sceglie te ogni giorno.`,`Fai un respiro: stai facendo un ottimo lavoro con ${A}. 💪`]
+  :[`Ricordati sempre che sei bellissima ✨`,`Ricordati sempre che ${B} ti vuole bene 💗`,`${B} è fortunato ad averti accanto.`,`Oggi sei più forte di quanto pensi.`,`${B} pensa a te, anche quando non lo dice.`];
+ S.lastRem=Date.now();sbMsg(L[Math.floor(Math.random()*L.length)]);}
+function trialReset(){ // dal 9 dicembre (fine prova) si azzera ciò che è stato provato; restano nomi, lettere, regalini, carte create, mascotte e tema
+ if(S.resetDone||S.gameOk||S.devDate||new Date()<D9)return;
+ S.resetDone=true;S.favs=[];S.coupons={};S.log=[];S.done=0;S.mile=0;S.turn="a";S.pass={};S.filter="all";S.demoN=0;
+ S.chat=S.chat.filter(m=>m.from!=="sbang");S.notif={welcome:S.notif.welcome};S.lastRem=0;saveNow();
+ sbMsg("🎮 La prova è finita! Ho azzerato le carte provate: da oggi si gioca davvero. Buon divertimento!",null,"reset");}
+function renderChat(){const o=S.me==="a"?"b":"a",src=mimg(cur()),fmt=t=>{const d=new Date(t),h=d.toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"});return d.toDateString()===new Date().toDateString()?h:d.toLocaleDateString("it-IT",{day:"numeric",month:"short"})+" · "+h;};
+ const ms=S.chat.slice().sort((a,b)=>a.t-b.t).map(m=>{
+  if(m.mine)return `<div class="mg me">${esc(m.text)}<small>${fmt(m.t)}</small></div>`;
+  if(m.from==="sbang")return `<div class="mg sb">${esc(m.text)}${m.act?`<br><button data-act="${m.act}">${m.act==="gift"?"Apri la lettera":"Vai al calendario"}</button>`:""}<small>${fmt(m.t)}</small></div>`;
+  return `<div class="mg ot" style="--pcx:${PC[m.from]}"><span class="who">${esc(S.names[m.from])}</span>${esc(m.text)}<small>${fmt(m.t)}</small></div>`;}).join("");
+ $("chat").innerHTML=`<div class="cp"><div class="chd"><div class="av">${src?`<img src="${src}" alt="">`:"🦀"}</div><div><b>${esc(cur().n)}</b><small>la tua mascotte</small></div><button class="x" data-x="1" aria-label="Chiudi">${svg("x")}</button></div>
+ <div id="cmsgs">${ms||'<div class="empty"><span>💬</span>Nessun messaggio.</div>'}</div>
+ <div class="ctip"><span>Per far arrivare i messaggi a ${esc(S.names[o]||"lui/lei")}, invia i dati su WhatsApp.</span><button id="cWa">💬 Invia</button></div>
+ <div class="cin"><input type="text" id="cIn" maxlength="300" placeholder="Scrivi a ${esc(S.names[o]||"lui/lei")}…"><button id="cSend" aria-label="Invia">↑</button></div></div>`;
+ const c=$("cmsgs");c.scrollTop=c.scrollHeight;}
+function openChat(){renderChat();$("chat").classList.add("on");S.chat.forEach(m=>{if(!m.mine)m.read=true;});save();updateChatDot();snd(520,.08);react("wave","Ciao! 💬");}
+const closeChat=()=>$("chat").classList.remove("on");
+function sendChat(){const i=$("cIn"),t=i.value.trim();if(!t)return;if(!S.me){toast("Imposta prima di chi è questo telefono");return;}
+ S.chat.push({id:"u"+Date.now()+Math.random().toString(36).slice(2,5),t:Date.now(),from:S.me,text:t.slice(0,300),read:true,mine:true});save();renderChat();snd(660,.1);react("hop","Messaggio pronto! 💌");}
+$("chatBtn").addEventListener("click",openChat);
+$("chat").addEventListener("click",e=>{const t=e.target;if(t.id==="chat"||t.closest("[data-x]"))closeChat();
+ else if(t.dataset.act){closeChat();if(t.dataset.act==="gift")giftModal();else go("advent");}
+ else if(t.id==="cSend")sendChat();else if(t.id==="cWa")waShare(enc({share:buildShare()}),"sbangy-dati.txt");});
+$("chat").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="cIn"){e.preventDefault();sendChat();}});
+const WELCOME=()=>"Ciao! Sono "+mnames()+" 🦀 Da qui ti scrivo promemoria e ti arrivano i messaggi dell'altra persona.";
+function start(){trialReset();applyDev();applyTheme();renderNav();renderChips();renderTurn();refreshGift();initMascot();updateChatBtn();
+ if(S.me){sbMsg(WELCOME(),null,"welcome");dailyMsgs();maybeReminder();}updateChatDot();setInterval(()=>{dailyMsgs();maybeReminder();},1800000);
  if(!S.me)onboarding();else showSplash();}
 function onboarding(){
  modal(`<h2>Benvenuti su Sbangy 🦀</h2><p>Due nomi e siete pronti a giocare.</p><label>Lei</label><input type="text" id="oA" value="${esc(S.names.a)}"><label>Lui</label><input type="text" id="oB" value="${esc(S.names.b)}">
  <label>Questo telefono è di</label><select id="oMe"><option value="a">Lei</option><option value="b">Lui</option></select><button class="btn full" id="oGo">Iniziamo</button>`);
- $("oGo").onclick=()=>{S.names.a=$("oA").value.trim()||"Ginevra";S.names.b=$("oB").value.trim()||"Lorenzo";S.me=$("oMe").value;save();closeM();renderTurn();refreshGift();react("cheer","Piacere, sono "+mnames()+"!");
+ $("oGo").onclick=()=>{S.names.a=$("oA").value.trim()||"Ginevra";S.names.b=$("oB").value.trim()||"Lorenzo";S.me=$("oMe").value;save();closeM();sbMsg(WELCOME(),null,"welcome");renderTurn();refreshGift();react("cheer","Piacere, sono "+mnames()+"!");
   setTimeout(showSplash,400);};}
 start();
 </script>
