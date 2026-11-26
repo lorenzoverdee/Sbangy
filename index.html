@@ -158,6 +158,17 @@ background:linear-gradient(145deg,rgba(255,255,255,.24),rgba(255,255,255,.08));b
 .gt .bx{position:absolute;inset:0;margin:auto;width:62%;height:62%}.gt.lock .bx{opacity:.5;filter:grayscale(.7)}
 .gt .pl,.gt .ck{position:absolute;right:5px;bottom:5px;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:700 .8rem var(--sans)}
 .gt .pl{background:var(--acc);color:#fff}.gt .ck{background:var(--gold);color:#241800}.gt .lk{position:absolute;right:5px;top:4px;font-size:.7rem}
+#createBtn{position:fixed;top:calc(env(safe-area-inset-top) + 10px);right:14px;z-index:45;width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink);
+background:linear-gradient(145deg,rgba(255,255,255,.3),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.35);-webkit-backdrop-filter:blur(14px) saturate(1.8);backdrop-filter:blur(14px) saturate(1.8);
+box-shadow:inset 0 1px 1px rgba(255,255,255,.65),inset 0 -8px 12px rgba(255,255,255,.07),0 8px 22px -8px rgba(0,0,0,.6);transition:transform .2s}
+#createBtn:active{transform:scale(.92)}#createBtn::before{content:"";position:absolute;top:3px;left:9px;right:9px;height:14px;border-radius:50%;background:linear-gradient(rgba(255,255,255,.5),transparent);pointer-events:none}
+#createBtn svg{width:24px;height:24px}html.desk #createBtn{right:32px;top:18px}
+#utoast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom));transform:translate(-50%,20px);padding:7px 7px 7px 16px;border-radius:99px;font-size:.85rem;opacity:0;visibility:hidden;transition:.35s;z-index:85;background:var(--bg);display:flex;gap:10px;align-items:center}
+#utoast.on{opacity:1;visibility:visible;transform:translate(-50%,0)}#utoast button{padding:7px 14px;border-radius:99px;background:var(--acc);color:#fff;font-weight:600}
+.sep{flex:none;width:1px;background:var(--line);margin:4px 2px}
+.tl{position:relative;margin-left:6px;padding-left:16px;border-left:2px solid var(--line)}.tld{font-size:.76rem;color:var(--mute);margin:12px 0 6px;text-transform:capitalize}
+.tl .item{position:relative}.tl .item::before{content:"";position:absolute;left:-24px;top:18px;width:10px;height:10px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c)}
+.lph{display:block;max-width:100%;max-height:140px;border-radius:12px;margin-top:8px;cursor:pointer}.cap.open{cursor:pointer;border-left-color:var(--gold)}.cap.mine{cursor:pointer}
 /* ===== VERSIONE COMPUTER (rilevata in automatico, modificabile nelle Opzioni) ===== */
 html.desk{font-size:118%}html.desk body{padding:0}
 html.desk #app{max-width:none;width:100%;display:grid;grid-template-columns:260px 1fr;grid-template-rows:auto 1fr;column-gap:28px;padding:0 32px}
@@ -178,7 +189,7 @@ html.desk button:not(:disabled):hover{filter:brightness(1.12)}
 #modal.on .sheet{transform:none}.sheet p{line-height:1.5;margin-bottom:10px;font-size:.93rem}.letter{font:italic 1rem/1.6 var(--serif);padding:14px;border-left:3px solid var(--gold);margin-bottom:12px;white-space:pre-wrap;-webkit-user-select:text;user-select:text}
 #fx{position:fixed;inset:0;pointer-events:none;z-index:60;width:100%;height:100%}
 #toast{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom));transform:translate(-50%,20px);padding:10px 18px;border-radius:99px;font-size:.84rem;opacity:0;transition:.35s;z-index:80;pointer-events:none;background:var(--bg)}#toast.on{opacity:1;transform:translate(-50%,0)}
-#mascot{position:fixed;left:8px;top:0;z-index:40;pointer-events:none}
+#mascot{position:fixed;left:8px;top:0;z-index:40;pointer-events:none;transition:left .5s ease,top .5s ease}
 #mascot canvas,#mascot .msticker{width:100%;height:100%;pointer-events:auto;display:block;touch-action:none;cursor:grab}#mascot .mfall{pointer-events:auto;touch-action:none}
 .msticker{object-fit:contain;border-radius:50%;filter:drop-shadow(0 8px 8px rgba(0,0,0,.45));animation:bob 2.4s ease-in-out infinite}.mfall{font-size:3rem;text-align:center;animation:bob 2.4s infinite}
 @keyframes bob{50%{transform:translateY(-6px) rotate(3deg)}}
@@ -208,10 +219,13 @@ html.desk button:not(:disabled):hover{filter:brightness(1.12)}
       </div>
     </section>
     <section class="view" id="v-advent"><h2>Calendario dell'Avvento</h2><p class="hint" style="text-align:left">Ogni giorno aggiungi il regalino che trovi: una foto e un nome. Nell'altra sezione trovi quelli che arrivano dal suo file.</p><div class="chips" id="advTabs"></div><div class="adv" id="advGrid"></div></section>
-    <section class="view" id="v-coupons"><h2>I nostri coupon</h2><div id="couponList"></div></section>
-    <section class="view" id="v-diary"><h2>Diario dei momenti</h2><div class="stats" id="stats"></div><h3>Traguardi insieme</h3><div class="ms" id="ms"></div><h3>Preferite</h3><div id="favList"></div><h3>Momenti</h3><div id="logList"></div></section>
+    <section class="view" id="v-mem"><div class="chips" id="memTabs"></div>
+      <div id="pCpn"><h2>I nostri coupon</h2><div id="couponList"></div></div>
+      <div id="pDia"><h2>Diario dei momenti</h2><div class="stats" id="stats"></div><h3>Traguardi insieme</h3><div class="ms" id="ms"></div><h3>Momenti</h3><div id="logList"></div></div>
+      <div id="pFav"><h2>Carte preferite</h2><div id="favList"></div></div>
+      <div id="pCap"><h2>Capsule del tempo</h2><p class="hint" style="text-align:left">Scrivi un messaggio che l'altra persona potrà aprire solo in una data che scegli (ad esempio ogni 17 del mese).</p><button class="btn full" id="capNew">+ Nuova capsula</button><div id="capList"></div></div></section>
     <section class="view" id="v-create">
-      <h2>Crea la tua carta</h2>
+      <button class="btn ghost" id="crBack">← Torna al gioco</button><h2>Crea la tua carta</h2>
       <label for="newText">Cosa vuoi scrivere?</label><textarea id="newText" maxlength="220" placeholder="Es. Scrivimi un biglietto d'amore e nascondilo in casa"></textarea>
       <button class="btn ghost" id="micNew" style="margin-top:8px">🎙 Detta</button>
       <label>Categoria</label><div class="cats" id="newCats"></div>
@@ -225,6 +239,7 @@ html.desk button:not(:disabled):hover{filter:brightness(1.12)}
 </div>
 <div id="splash"><div class="sp glass" id="spCard"><div class="ic">🎁</div><h2>La lettera dei 5 mesi</h2><p id="spS"></p><button class="btn" id="spOpen">Apri la lettera</button><small>Tocca fuori per continuare</small></div></div>
 <div id="mascot"><div id="bub"></div></div>
+<button id="createBtn" aria-label="Crea una carta"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button><div id="utoast" class="glass"></div>
 <button id="chatBtn" aria-label="Chat con Sbang"><span id="chatAv"></span><i class="dot" id="chatDot"></i></button><div id="chat"></div><div id="reveal"></div>
 <canvas id="fx"></canvas><div id="toast" class="glass"></div><div id="modal"><div class="sheet" id="sheet"></div></div>
 
@@ -280,9 +295,12 @@ const BASE=[
 ["fun","Canta il ritornello della tua canzone preferita con la bocca piena d'acqua, senza sputarla.","Penitenza",2],
 ["fun","Prova a non ridere con l'acqua in bocca.","Sfida",2],
 ["fun","Fate il gioco della piadina di TikTok.","Sfida",2],
-["cpn","Ruba un coupon a tua scelta dal mazzo dell'altra persona.","Sfida",1],
-["fun","Sei obbligato/a a farti fare 5 secondi di solletico sotto i piedi.","Penitenza",2,0,5]
-].map((a,i)=>({id:"b"+i,cat:a[0],t:a[1],k:a[2],l:a[3],cp:!!a[4],s:a[5]||0}));
+["cpn","Ruba un coupon a tua scelta dal mazzo dell'altra persona.","Sfida",1,0,0,1,"steal"],
+["fun","Sei obbligato/a a farti fare 5 secondi di solletico sotto i piedi.","Penitenza",2,0,5],
+["cpn","🕵️ Ladro di coupon: ruba un coupon non ancora riscattato all'altra persona.","Sfida",1,0,0,1,"steal"],
+["cpn","🎭 Furto con destrezza: ruba un coupon all'altra persona e, per sdebitarti, falle un complimento.","Sfida",1,0,0,1,"steal"],
+["cpn","🗝️ Il colpo del secolo: ruba il coupon che preferisci e fai la danza della vittoria.","Sfida",2,0,0,1,"steal"]
+].map((a,i)=>({id:"b"+i,cat:a[0],t:a[1],k:a[2],l:a[3],cp:!!a[4],s:a[5]||0,r:!!a[6],a:a[7]||null}));
 const PEN=["Canta una strofa a squarciagola","Un bacio sulla fronte all'altro","Tre complimenti, subito","Fai il verso di un animale scelto dall'altro","Balla per venti secondi","Racconta un segreto innocuo"];
 const PC={a:"#f48fb1",b:"#6ec1ff"};
 const BT={bg:"#0f111a",bg2:"#3a1424",ink:"#f6eef0",mute:"#b5a3ad",acc:"#f4a6b8",acc2:"#d6304f",gold:"#e9b44c",glass:"rgba(255,255,255,.06)",line:"rgba(255,255,255,.13)"};
@@ -303,11 +321,11 @@ draw:'<rect x="5" y="3" width="14" height="18" rx="3"/><path d="M12 15l-2-2a1.5 
 diary:'<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM9 9h6M9 13h6"/>',plus:'<path d="M12 5v14M5 12h14"/>',set:'<path d="M4 7h9M17 7h3M4 12h3M11 12h9M4 17h11M19 17h1"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="17" r="2"/>',
 gift:'<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M5 12v8h14v-8M8 8a2.5 2.5 0 1 1 4-2 2.5 2.5 0 1 1 4 2"/>',trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>'};
 const svg=k=>`<svg viewBox="0 0 24 24">${IC[k]}</svg>`;
-const NAV=[["draw","Pesca"],["coupons","Coupon","cpn"],["advent","Avvento","gift"],["diary","Diario"],["create","Crea","plus"],["set","Opzioni","set"]];
+const NAV=[["draw","Pesca"],["advent","Avvento","gift"],["mem","Ricordi","diary"],["set","Opzioni","set"]];
 
 /* ================= STATO + LOCALSTORAGE ================= */
 const KEY="sbangy-v1";
-let S={names:{a:"Ginevra",b:"Lorenzo"},me:null,turn:"a",theme:"natale",lvl:3,sound:true,big:false,hc:false,mascots:[{id:"crab",n:"Sbang",s:110,p:null}],mSel:"crab",advent:{},dev:"auto",devDate:null,demoN:0,gameOk:false,chat:[],adv:{a:{},b:{}},notif:{},lastRem:0,resetDone:false,mPos:null,
+let S={names:{a:"Ginevra",b:"Lorenzo"},me:null,turn:"a",theme:"natale",lvl:3,sound:true,big:false,hc:false,mascots:[{id:"crab",n:"Sbang",s:110,p:null}],mSel:"crab",advent:{},dev:"auto",devDate:null,demoN:0,gameOk:false,chat:[],adv:{a:{},b:{}},seen:[],caps:[],lastPlay:0,lastQuip:0,notif:{},lastRem:0,resetDone:false,mPos:null,
  custom:[],favs:[],coupons:{},log:[],done:0,pass:{},filter:"all",cust:{acc:"#f4a6b8",acc2:"#d6304f",bg:"#0f111a",ink:"#f6eef0",img:null},myLetter:"",theirLetter:"",sim:false,mile:0};
 try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||"{}"));}catch(e){}
 if(!S.mascots||!S.mascots.length)S.mascots=[{id:"crab",n:"Sbang",s:110,p:null}];
@@ -331,7 +349,7 @@ const D4=new Date(2026,11,4),D17=new Date(2026,11,17),D9=new Date(2026,11,9);
 // Fino al 9 dicembre: solo 3 carte fisse (domanda, sfida con timer, coupon), sempre le stesse e nello stesso ordine
 const DEMO=["b0","b3","b18"];
 const demoOn=()=>now()<D9&&!S.gameOk;
-let current=null,drawer="a",busy=false,AC=null;
+let current=null,drawer="a",busy=false,AC=null,tok={a:2,b:2},tokShown=false,curView="draw",memTab="cpn"; // tok: gettoni, si azzerano a ogni apertura
 
 /* ================= UTILITÀ ================= */
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("on"),2000);}
@@ -348,17 +366,18 @@ function saveFile(t,name){const a=document.createElement("a");a.href=URL.createO
 async function waShare(code,name){name=name||"sbangy-dati.txt";const f=new File([code],name,{type:"text/plain"});
  try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:"Dati di Sbangy"});return;}}catch(e){if(e&&e.name==="AbortError")return;}
  saveFile(code,name);toast("File salvato: allegalo in WhatsApp");}
-const buildShare=()=>({v:2,from:S.me,msgs:S.chat.filter(m=>m.mine).slice(-60).map(m=>({id:m.id,t:m.t,text:m.text})),cards:S.custom,favs:S.favs,coupons:S.coupons,mascots:S.mascots,log:S.log,done:S.done,advent:ADV(myW()),letter:S.myLetter,theme:S.theme,cust:S.cust});
+const buildShare=()=>({v:2,from:S.me,caps:S.caps.filter(c=>c.from===S.me),msgs:S.chat.filter(m=>m.mine).slice(-60).map(m=>({id:m.id,t:m.t,text:m.text})),cards:S.custom,favs:S.favs,coupons:S.coupons,mascots:S.mascots,log:S.log,done:S.done,advent:ADV(myW()),letter:S.myLetter,theme:S.theme,cust:S.cust});
 function mergeShare(sh,rep){
  const nu=(a,k)=>{const m=new Set(a.map(k));return x=>!m.has(k(x));};
  if(rep){S.custom=sh.cards||[];S.favs=sh.favs||[];S.coupons=sh.coupons||{};if(sh.mascots&&sh.mascots.length)S.mascots=sh.mascots;S.log=sh.log||[];S.done=sh.done||0;if(sh.theme)S.theme=sh.theme;if(sh.cust)S.cust=sh.cust;}
  else{(sh.cards||[]).filter(nu(S.custom,c=>c.id)).forEach(c=>S.custom.push(c));
   (sh.favs||[]).forEach(f=>{if(!S.favs.includes(f))S.favs.push(f);});
-  Object.entries(sh.coupons||{}).forEach(([k,v])=>{const l=S.coupons[k];if(!l)S.coupons[k]=v;else if(v.used)l.used=true;});
+  Object.entries(sh.coupons||{}).forEach(([k,v])=>{const l=S.coupons[k];if(!l)S.coupons[k]=v;else if((v.at||0)>(l.at||0))S.coupons[k]=v;else if(!(l.at||v.at)&&v.used)l.used=true;});
   (sh.mascots||[]).filter(nu(S.mascots,m=>m.id)).forEach(m=>S.mascots.push(m));
   (sh.log||[]).filter(nu(S.log,l=>l.d+l.t)).forEach(l=>S.log.push(l));S.log.sort((a,b)=>b.d-a.d);
   if(sh.from&&sh.from!==S.me&&sh.advent){const A=ADV(sh.from);Object.entries(sh.advent).forEach(([d,g])=>{A[d]=g;});} /* i regali dell'altro vanno nella sua sezione */S.done=Math.max(S.done,sh.done||0);}
  if(sh.msgs&&sh.from&&sh.from!==S.me){let n=0;sh.msgs.forEach(m=>{const id=sh.from+m.id;if(!S.chat.some(x=>x.id===id)){S.chat.push({id,t:m.t,from:sh.from,text:m.text,read:false});n++;}});if(n)toast(n+" nuovi messaggi in chat");}
+ if(sh.caps&&sh.from&&sh.from!==S.me)sh.caps.forEach(c=>{if(!S.caps.some(x=>x.id===c.id)){S.caps.push(c);sbMsg("⏳ È arrivata una capsula del tempo di "+(S.names[sh.from]||"lui/lei")+": si aprirà il "+capDate(c).toLocaleDateString("it-IT",{day:"numeric",month:"long"})+".","caps","capin"+c.id);}});
  if(sh.letter!=null&&sh.from!==S.me){if(!S.theirLetter)sbMsg("💌 È arrivata la lettera di "+(S.names[sh.from]||"lui/lei")+"! Resta sigillata fino al 17 dicembre.",null,"ltin");S.theirLetter=sh.letter;}
  updateChatDot(); // la lettera dell'altro arriva insieme ai dati
  if(!S.mascots.some(m=>m.id===S.mSel))S.mSel=S.mascots[0].id;S.mile=[10,25,50,100].filter(m=>S.done>=m).length;
@@ -367,7 +386,7 @@ function importAsk(sh){const c=o=>Object.keys(o||{}).length;
  modal(`<h2>📦 Dati ricevuti</h2><p>${(sh.cards||[]).length} carte create · ${(sh.favs||[]).length} preferite · ${c(sh.coupons)} coupon · ${(sh.mascots||[]).filter(m=>m.id!=="crab").length} mascotte · ${c(sh.advent)} regalini · ${(sh.log||[]).length} momenti nel diario</p>
  <button class="btn full" id="iMerge">Unisci ai miei dati</button>
  <p style="font-size:.78rem;color:var(--mute);margin-top:10px">Aggiungo ciò che manca ai tuoi dati senza cancellare nulla. I regali di quella persona vanno nella sua sezione.</p>`);
- $("iMerge").onclick=()=>mergeShare(sh,false);}
+ $("iMerge").onclick=()=>withUndo("Dati uniti",()=>mergeShare(sh,false));}
 function doImport(raw){const o=dec(raw);
  if(!o){toast(/SBANGY1:/.test(raw)?"Codice incompleto: copialo per intero":"Non è un codice o un file di Sbangy");return;}
  if(o.share){importAsk(o.share);return;}
@@ -512,26 +531,33 @@ function react(k,m){M.anim={k,t:performance.now()};if(m)say(m);if(M.el&&cur().p)
 (()=>{const box=$("mascot");let d=null;
  const clamp=()=>{const s=cur().s;box.style.left=Math.min(Math.max(0,parseFloat(box.style.left)||0),innerWidth-s)+"px";box.style.top=Math.min(Math.max(0,parseFloat(box.style.top)||0),innerHeight-s)+"px";};
  M.place=()=>{const s=cur().s;if(S.mPos){box.style.left=S.mPos.x+"px";box.style.top=S.mPos.y+"px";}else{box.style.left="8px";box.style.top=(innerHeight-s-90)+"px";}clamp();};
- box.addEventListener("pointerdown",e=>{if(!e.target.closest("canvas,img,.mfall"))return;d={x:e.clientX,y:e.clientY,l:parseFloat(box.style.left),t:parseFloat(box.style.top),m:false};try{e.target.setPointerCapture(e.pointerId);}catch(x){}e.preventDefault();});
+ box.addEventListener("pointerdown",e=>{if(!e.target.closest("canvas,img,.mfall"))return;d={x:e.clientX,y:e.clientY,l:parseFloat(box.style.left),t:parseFloat(box.style.top),m:false};box.style.transition="none";try{e.target.setPointerCapture(e.pointerId);}catch(x){}e.preventDefault();});
  box.addEventListener("pointermove",e=>{if(!d)return;const dx=e.clientX-d.x,dy=e.clientY-d.y;if(Math.abs(dx)+Math.abs(dy)>6)d.m=true;if(d.m){box.style.left=d.l+dx+"px";box.style.top=d.t+dy+"px";clamp();}});
- box.addEventListener("pointerup",()=>{if(!d)return;if(d.m){S.mPos={x:parseFloat(box.style.left),y:parseFloat(box.style.top)};save();}else{react("hop",["Ehi! 🦀","Fammi il solletico!","Ciao "+nm(S.turn)+"!"][Math.floor(Math.random()*3)]);snd(660);}d=null;});
+ box.addEventListener("pointerup",()=>{if(!d)return;box.style.transition="";if(d.m){S.mPos={x:parseFloat(box.style.left),y:parseFloat(box.style.top)};save();}else{react("hop",["Ehi! 🦀","Fammi il solletico!","Ciao "+nm(S.turn)+"!"][Math.floor(Math.random()*3)]);snd(660);}d=null;});
  box.addEventListener("pointercancel",()=>{d=null;});addEventListener("resize",clamp);})();
 const cur=()=>S.mascots.find(m=>m.id===S.mSel)||S.mascots[0],mnames=()=>cur().n;
 
 /* ================= NAVIGAZIONE ================= */
-function renderNav(){$("nav").innerHTML=NAV.map((n,i)=>`<button data-v="${n[0]}" class="${i?"":"on"}">${svg(n[2]||n[0])}${n[1]}${n[0]==="coupons"?'<span class="badge" id="badge"></span>':""}</button>`).join("");updateBadge();}
-function go(v){document.querySelectorAll(".view").forEach(e=>e.classList.toggle("on",e.id==="v-"+v));
+function renderNav(){$("nav").innerHTML=NAV.map((n,i)=>`<button data-v="${n[0]}" class="${i?"":"on"}">${svg(n[2]||n[0])}${n[1]}${n[0]==="mem"?'<span class="badge" id="badge"></span>':""}</button>`).join("");updateBadge();}
+function go(v){curView=v;document.querySelectorAll(".view").forEach(e=>e.classList.toggle("on",e.id==="v-"+v));
  document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
- ({coupons:renderCoupons,advent:renderAdvent,diary:renderDiary,create:renderCustom,set:renderSet})[v]&&({coupons:renderCoupons,advent:renderAdvent,diary:renderDiary,create:renderCustom,set:renderSet})[v]();
- react("wave",{draw:"Si gioca!",advent:"Un regalino al giorno!",coupons:"I vostri coupon!",diary:"Quanti ricordi!",create:"Idee nuove?",set:"Rendimi bello!"}[v]);snd(520,.08);}
+ const R={advent:renderAdvent,mem:renderMem,create:renderCustom,set:renderSet};R[v]&&R[v]();
+ $("createBtn").style.display=v==="draw"?"flex":"none"; // il tasto + sta solo nella home
+ react("wave",{draw:"Si gioca!",advent:"Un regalino al giorno!",mem:"Quanti ricordi!",create:"Idee nuove?",set:"Rendimi bello!"}[v]);snd(520,.08);dodge();}
+$("createBtn").addEventListener("click",()=>go("create"));$("crBack").addEventListener("click",()=>go("draw"));
+function renderMem(){
+ $("memTabs").innerHTML=[["cpn","🎟 Coupon"],["dia","📖 Diario"],["fav","💗 Preferite"],["cap","⏳ Capsule"]].map(a=>`<button class="chip ${memTab===a[0]?"on":""}" data-t="${a[0]}"><i></i>${a[1]}</button>`).join("");
+ [["cpn","pCpn"],["dia","pDia"],["fav","pFav"],["cap","pCap"]].forEach(([k,id])=>{$(id).style.display=memTab===k?"block":"none";});
+ if(memTab==="cpn")renderCoupons();else if(memTab==="cap")renderCaps();else renderDiary();}
+$("memTabs").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;memTab=b.dataset.t;renderMem();snd(520,.06);});
 $("nav").addEventListener("click",e=>{const b=e.target.closest("button");if(b)go(b.dataset.v);});
 
 /* ================= GIOCO ================= */
-function renderTurn(){document.documentElement.style.setProperty("--pc",PC[S.turn]);const h=`Tocca a <b>${esc(S.names[S.turn])}</b>`;$("turnTag").innerHTML=h;$("turnTag2").innerHTML=h;}
+function renderTurn(){document.documentElement.style.setProperty("--pc",PC[S.turn]);const h=`Tocca a <b>${esc(S.names[S.turn])}</b>`;$("turnTag").innerHTML=h;$("turnTag2").innerHTML=h;updatePass();}
 $("turnTag").addEventListener("click",e=>{e.stopPropagation();S.turn=S.turn==="a"?"b":"a";save();renderTurn();snd(440,.08);}); // tocca il nome per cambiare turno a mano
-function renderChips(){$("chips").innerHTML=Object.entries(CATS).map(([k,v])=>`<button class="chip ${S.filter===k?"on":""}" data-k="${k}" style="--c:${v.c}"><i></i>${v.n}</button>`).join("");
+function renderChips(){$("chips").innerHTML=Object.entries(CATS).map(([k,v])=>`<button class="chip ${S.filter===k?"on":""}" data-k="${k}" style="--c:${v.c}"><i></i>${v.n}</button>`).join("")+'<span class="sep"></span>'+[[1,"🌸 Dolce"],[2,"😄 Media"],[3,"🔥 Audace"]].map(([l,n])=>`<button class="chip ${S.lvl===l?"on":""}" data-l="${l}" style="--c:#ffc857"><i></i>${n}</button>`).join("");
  $("newCats").innerHTML=Object.entries(CATS).filter(([k])=>k!=="all").map(([k,v],i)=>`<button class="chip ${k===newCat?"on":""}" data-k="${k}" style="--c:${v.c}"><i></i>${v.n}</button>`).join("");}
-$("chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;S.filter=b.dataset.k;save();renderChips();});
+$("chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;if(b.dataset.l)S.lvl=+b.dataset.l;else S.filter=b.dataset.k;save();renderChips();});
 let newCat="rom";
 $("newCats").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;newCat=b.dataset.k;renderChips();});
 function resetCard(){clearInterval(draw.t);$("card").classList.remove("flip","show");$("actions").classList.remove("on");$("deck").style.visibility="visible";current=null;$("hint").textContent="Tocca il mazzo (o scorri verso l'alto) per pescare";demoUI();}
@@ -544,34 +570,43 @@ function demoLockMsg(){modal(`<h2>🔒 Il gioco si sblocca il 9 dicembre</h2><p>
 function unlockGame(){askPw(()=>{S.gameOk=true;save();demoUI();reSet();toast("Gioco completo sbloccato");react("cheer","Si gioca!");confetti(60);});}
 function draw(){
   if(busy||current)return;
+  if(!tokShown&&!demoOn()){tokenIntro();return;} // prima di giocare: spiega i gettoni
   const dm=demoOn();if(dm&&S.demoN>=DEMO.length){demoLockMsg();return;}busy=true;
   const pool=all().filter(c=>c.l<=S.lvl&&(S.filter==="all"||c.cat===S.filter));
   if(!dm&&!pool.length){toast("Nessuna carta con questi filtri");busy=false;return;}
-  const pick=dm?byId(DEMO[S.demoN]):pool[Math.floor(Math.random()*pool.length)];current=pick;drawer=S.turn;
+  const pick=dm?byId(DEMO[S.demoN]):pickCard(pool);current=pick;drawer=S.turn;
   const card=$("card"),deck=$("deck"),cat=CATS[pick.cat];
   deck.classList.remove("shake");void deck.offsetWidth;deck.classList.add("shake");buzz(15);snd(300,.1);react("hop","Chi sarà?");
   card.style.setProperty("--cc",cat.c);$("ctag").innerHTML=svg(pick.cat)+cat.n;$("ctxt").textContent=pick.t;
   $("ckind").textContent=pick.cp?"Coupon di "+S.names[drawer]:pick.k;$("hint").textContent="";
   clearInterval(draw.t);const tb=$("timerBtn");tb.classList.remove("run");tb.style.display=pick.s?"inline-flex":"none";tb.textContent="⏱ "+tf(pick.s);
   setTimeout(()=>{card.classList.add("show");deck.style.visibility="hidden";requestAnimationFrame(()=>requestAnimationFrame(()=>card.classList.add("flip")));
-    setTimeout(()=>{$("actions").classList.add("on");updateFav();busy=false;snd(660,.18);buzz([10,40,10]);
-      if(pick.cp&&!S.coupons[pick.id]){S.coupons[pick.id]={used:false,owner:drawer};save();updateBadge();confetti(90);react("cheer","Un coupon per "+S.names[drawer]+"!");}else confetti(30);},700);},280);
+    setTimeout(()=>{$("actions").classList.add("on");updateFav();dodge();busy=false;snd(660,.18);buzz([10,40,10]);
+      if(pick.cp&&!S.coupons[pick.id]){S.coupons[pick.id]={used:false,owner:drawer,at:Date.now()};save();updateBadge();confetti(90);react("cheer","Un coupon per "+S.names[drawer]+"!");}else confetti(30);},700);},280);
 }
 $("deck").addEventListener("click",draw);
 function nextTurn(){if(demoOn()&&current&&current.id===DEMO[S.demoN])S.demoN++; // la carta di prova conta solo quando la completi
  S.turn=S.turn==="a"?"b":"a";S.mile=S.mile||0;save();setTimeout(()=>{resetCard();renderTurn();},300);}
-$("doneBtn").addEventListener("click",()=>{if(!current)return;const c=current;
- let v=0;modal(`<h2>Com'è andata?</h2><p>${esc(c.t)}</p><div class="hearts" id="hr">${[1,2,3,4,5].map(n=>`<button data-v="${n}">💗</button>`).join("")}</div>
- <textarea id="note" placeholder="Una nota (facoltativa)"></textarea><button class="btn ghost" id="micN" style="margin-top:8px">🎙 Detta</button><button class="btn full" id="saveLog">Salva nel diario</button><button class="btn ghost full" id="skipLog">Salta</button>`);
+function diaryModal(c){
+ let v=0,photo=null;modal(`<h2>Com'è andata?</h2><p>${esc(c.t)}</p><div class="hearts" id="hr">${[1,2,3,4,5].map(n=>`<button data-v="${n}">💗</button>`).join("")}</div>
+ <textarea id="note" placeholder="Una nota (facoltativa)"></textarea><button class="btn ghost" id="micN" style="margin-top:8px">🎙 Detta</button><button class="btn ghost" id="phBtn" style="margin-top:8px">📷 Foto</button><input type="file" id="phIn" accept="image/*" style="display:none"><div id="phPrev" style="text-align:center;padding:6px"></div><button class="btn full" id="saveLog">Salva nel diario</button><button class="btn ghost full" id="skipLog">Salta</button>`);
  mic($("note"),$("micN"));
+ $("phBtn").onclick=()=>$("phIn").click();$("phIn").onchange=e=>{const f=e.target.files[0];if(f)readImg(f,480,d=>{photo=d;$("phPrev").innerHTML=`<img src="${d}" alt="" style="max-width:100%;max-height:140px;border-radius:12px">`;});};
  $("hr").onclick=e=>{const b=e.target.closest("button");if(!b)return;v=+b.dataset.v;[...$("hr").children].forEach((x,i)=>x.classList.toggle("on",i<v));snd(500+v*60,.08);};
- const fin=log=>{if(log)S.log.unshift({t:c.t,who:drawer,d:Date.now(),v,n:$("note").value.trim()});S.done++;
-  const ms=[10,25,50,100].filter(m=>S.done>=m).length;if(ms>(S.mile||0)){S.mile=ms;confetti(120);react("cheer","Nuovo traguardo! 🏆");toast("Traguardo: "+S.done+" carte insieme!");}else react("cheer","Bravi!");
+ const fin=log=>{if(log)S.log.unshift({t:c.t,who:drawer,d:Date.now(),v,n:$("note").value.trim(),p:photo});S.done++;S.lastPlay=Date.now();
+  const ms=[10,25,50,100].filter(m=>S.done>=m).length;if(ms>(S.mile||0)){S.mile=ms;confetti(120);react("cheer","Nuovo traguardo! 🏆");toast("Traguardo: "+S.done+" carte insieme!");sbQuip(Q.ms,1);}else{react("cheer","Bravi!");sbQuip(Q.done);}
   save();closeM();nextTurn();};
- $("saveLog").onclick=()=>fin(true);$("skipLog").onclick=()=>fin(false);});
-$("passBtn").addEventListener("click",()=>{if(!current)return;const today=now().toDateString();
- if(S.pass[S.turn]!==today){S.pass[S.turn]=today;toast("Carta passata");react("wave","Pazienza!");nextTurn();return;}
- modal(`<h2>Penitenza!</h2><p>${esc(S.names[S.turn])} ha già passato oggi. Tocca a:</p><div class="letter">${PEN[Math.floor(Math.random()*PEN.length)]}</div><button class="btn full" id="penOk">Fatta</button>`);
+ $("saveLog").onclick=()=>fin(true);$("skipLog").onclick=()=>fin(false);}
+$("doneBtn").addEventListener("click",()=>{if(!current)return;const c=current;if(c.a==="steal"&&!demoOn())stealModal(()=>diaryModal(c));else diaryModal(c);});
+function stealCoupon(id,to){const c=S.coupons[id];c.owner=to;c.at=Date.now();save();updateBadge();}
+function stealModal(next){const o=drawer==="a"?"b":"a",ids=Object.keys(S.coupons).filter(id=>byId(id)&&S.coupons[id].owner===o&&!S.coupons[id].used);
+ if(!ids.length){toast(S.names[o]+" non ha coupon da rubare 😅");react("wave","Mani vuote!");next();return;}
+ modal(`<h2>🕵️ Chi ruba, vince!</h2><p>Scegli un coupon di ${esc(S.names[o])} da rubare:</p>${ids.map(id=>`<button class="btn ghost full" data-id="${id}" style="text-align:left">${esc(byId(id).t)}</button>`).join("")}<button class="btn ghost full" id="stSkip">Lascia stare</button>`);
+ $("sheet").querySelectorAll("button[data-id]").forEach(b=>{b.onclick=()=>{stealCoupon(b.dataset.id,drawer);closeM();confetti(120);snd(740,.3);buzz([30,40,30]);react("cheer","Furto riuscito! 🕵️");toast("Coupon rubato a "+S.names[o]+"!");sbQuip(Q.steal,1);next();};});
+ $("stSkip").onclick=()=>{closeM();next();};}
+$("passBtn").addEventListener("click",()=>{if(!current)return;const dm=demoOn();
+ if(dm||tok[S.turn]>0){if(!dm)tok[S.turn]--;toast(dm?"Carta passata":"Gettone usato: te ne restano "+tok[S.turn]);react("wave",dm?"Pazienza!":(tok[S.turn]?"Un gettone in meno!":"Ultimo gettone usato!"));if(!dm)sbQuip(Q.pass,.4);nextTurn();return;}
+ modal(`<h2>Gettoni finiti!</h2><p>${esc(S.names[S.turn])} non ha più gettoni per passare. Penitenza:</p><div class="letter">${PEN[Math.floor(Math.random()*PEN.length)]}</div><button class="btn full" id="penOk">Fatta</button>`);
  react("hop","Niente scappatoie!");$("penOk").onclick=()=>{closeM();nextTurn();};});
 function updateFav(){$("favBtn").innerHTML=svg("rom")+"";$("favBtn").classList.toggle("on",!!current&&S.favs.includes(current.id));}
 $("favBtn").addEventListener("click",()=>{if(!current)return;const i=S.favs.indexOf(current.id);
@@ -593,16 +628,18 @@ function renderCoupons(){const ids=Object.keys(S.coupons).filter(byId);
  ids.sort((a,b)=>S.coupons[a].used-S.coupons[b].used);
  $("couponList").innerHTML=ids.map(id=>{const c=S.coupons[id],u=c.used;return `<div class="ticket ${u?"used":""}"><div class="t">${esc(byId(id).t)}<small>Coupon di ${esc(nm(c.owner))}</small></div>
   <button class="pill" data-id="${id}">${u?"Ripristina":"Riscatta"}</button><div class="stamp">RISCATTATO</div></div>`;}).join("");}
-$("couponList").addEventListener("click",e=>{const b=e.target.closest(".pill");if(!b)return;const c=S.coupons[b.dataset.id];c.used=!c.used;save();updateBadge();renderCoupons();
- if(c.used){confetti(70);snd(740,.25);buzz(30);react("cheer","Riscattato! 🎉");}});
+$("couponList").addEventListener("click",e=>{const b=e.target.closest(".pill");if(!b)return;const c=S.coupons[b.dataset.id];c.used=!c.used;c.at=Date.now();save();updateBadge();renderCoupons();
+ if(c.used){confetti(70);snd(740,.25);buzz(30);react("cheer","Riscattato! 🎉");sbQuip(Q.redeem,.5);}});
 
 /* ================= DIARIO ================= */
 function renderDiary(){const used=Object.values(S.coupons).filter(c=>c.used).length;
  $("stats").innerHTML=[[S.done,"carte fatte"],[used+"/"+Object.keys(S.coupons).length,"coupon usati"],[S.favs.length,"preferite"]].map(a=>`<div class="glass"><b>${a[0]}</b>${a[1]}</div>`).join("");
  $("ms").innerHTML=[10,25,50,100].map(m=>`<span class="${S.done>=m?"on":""}">🏆 ${m} carte</span>`).join("");
  const fv=S.favs.filter(byId);$("favList").innerHTML=fv.length?fv.map(id=>`<div class="item glass" style="--c:${CATS[byId(id).cat].c}"><div class="t">${esc(byId(id).t)}</div><button class="icon-btn" data-id="${id}">${svg("x")}</button></div>`).join(""):'<div class="empty"><span>💗</span>Nessuna preferita: tocca il cuore su una carta.</div>';
- $("logList").innerHTML=S.log.length?S.log.map(l=>`<div class="item glass" style="--c:${PC[l.who]}"><div class="t">${esc(l.t)}<small>${esc(S.names[l.who])} · ${new Date(l.d).toLocaleDateString("it-IT")} · ${"💗".repeat(l.v)}${l.n?"<br>"+esc(l.n):""}</small></div></div>`).join(""):'<div class="empty"><span>📖</span>Il diario è vuoto: dopo "Fatto" potete salvare i vostri momenti.</div>';}
-$("favList").addEventListener("click",e=>{const b=e.target.closest(".icon-btn");if(!b)return;S.favs=S.favs.filter(x=>x!==b.dataset.id);save();renderDiary();});
+ $("logList").innerHTML=S.log.length?(()=>{let last="",h='<div class="tl">';S.log.forEach(l=>{const dl=new Date(l.d).toLocaleDateString("it-IT",{weekday:"long",day:"numeric",month:"long"});if(dl!==last){h+=`<div class="tld">${dl}</div>`;last=dl;}
+  h+=`<div class="item glass" style="--c:${PC[l.who]}"><div class="t">${esc(l.t)}<small>${esc(S.names[l.who])} · ${"💗".repeat(l.v)}${l.n?"<br>"+esc(l.n):""}</small>${l.p?`<img class="lph" src="${l.p}" alt="">`:""}</div></div>`;});return h+"</div>";})():'<div class="empty"><span>📖</span>Il diario è vuoto: dopo "Fatto" potete salvare i vostri momenti.</div>';}
+$("logList").addEventListener("click",e=>{const i=e.target.closest(".lph");if(!i)return;modal(`<img src="${i.src}" alt="" style="width:100%;border-radius:16px"><button class="btn full" id="phC" style="margin-top:10px">Chiudi</button>`);$("phC").onclick=closeM;});
+$("favList").addEventListener("click",e=>{const b=e.target.closest(".icon-btn");if(!b)return;withUndo("Tolta dalle preferite",()=>{S.favs=S.favs.filter(x=>x!==b.dataset.id);});save();renderDiary();});
 
 /* ================= CREA ================= */
 $("saveBtn").addEventListener("click",()=>{const t=$("newText").value.trim();if(t.length<5){toast("Scrivi almeno qualche parola");return;}
@@ -612,7 +649,13 @@ function renderCustom(){ // tutte le carte; fino al 9 dicembre quelle del mazzo 
  const sec=c=>demoOn()&&c.id[0]==="b"&&!DEMO.includes(c.id);
  $("customList").innerHTML=Object.keys(CATS).filter(k=>k!=="all").map(k=>{const L=all().filter(c=>c.cat===k);if(!L.length)return "";
   return `<h3 style="color:${CATS[k].c}">${CATS[k].n} · ${L.length}</h3>`+L.map(c=>sec(c)?`<div class="item glass" style="--c:${CATS[k].c};opacity:.65"><div class="t">🔒 Carta segreta<small>Si scopre dal 9 dicembre</small></div></div>`:`<div class="item glass" style="--c:${CATS[k].c}"><div class="t">${esc(c.t)}<small>${["","Dolce","Media","Audace"][c.l]||""}${c.s?" · ⏱ "+tf(c.s):""}${c.id[0]==="c"?" · tua":""}</small></div>${c.id[0]==="c"?`<button class="icon-btn" data-id="${c.id}" aria-label="Elimina">${svg("trash")}</button>`:""}</div>`).join("");}).join("");}
-$("customList").addEventListener("click",e=>{const b=e.target.closest(".icon-btn");if(!b)return;const id=b.dataset.id;S.custom=S.custom.filter(c=>c.id!==id);S.favs=S.favs.filter(x=>x!==id);delete S.coupons[id];save();updateBadge();renderCustom();});
+let undoT;
+function showUndo(msg,snap){const t=$("utoast");t.innerHTML=`<span>${esc(msg)}</span><button id="utBtn">Annulla</button>`;t.classList.add("on");clearTimeout(undoT);undoT=setTimeout(()=>t.classList.remove("on"),7000);
+ $("utBtn").onclick=()=>{t.classList.remove("on");restoreSnap(snap);};}
+function restoreSnap(snap){const o=JSON.parse(snap);Object.keys(S).forEach(k=>delete S[k]);Object.assign(S,o);saveNow();refreshAll();toast("Annullato");}
+function withUndo(msg,fn){const snap=JSON.stringify(S);fn();showUndo(msg,snap);}
+function refreshAll(){applyTheme();renderChips();renderTurn();updateBadge();updateChatDot();refreshGift();initMascot();renderAdvent();const R={mem:renderMem,create:renderCustom,set:renderSet};R[curView]&&R[curView]();}
+$("customList").addEventListener("click",e=>{const b=e.target.closest(".icon-btn");if(!b)return;const id=b.dataset.id;withUndo("Carta eliminata",()=>{S.custom=S.custom.filter(c=>c.id!==id);S.favs=S.favs.filter(x=>x!==id);delete S.coupons[id];});save();updateBadge();renderCustom();});
 mic($("newText"),$("micNew"));
 
 /* ================= IMPOSTAZIONI ================= */
@@ -677,7 +720,7 @@ function advModal(d){const G=ADV(myW()),g=G[d],keep=g?g.p:null;let img=null,out=
  $("adP").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{img=i;run();};i.src=r.result;};r.readAsDataURL(f);};
  $("adT").oninput=()=>{clearTimeout(tm);tm=setTimeout(run,120);};
  $("adGo").onclick=()=>{const pn=out?smallPng(out,200):keep;if(!pn){toast("Aggiungi una foto");return;}G[d]={n:$("adN").value.trim()||"Regalino",p:pn};saveNow();closeM();renderAdvent();confetti(60);react("cheer","Che regalino! 🎁");};
- if(g)$("adDel").onclick=()=>{delete G[d];saveNow();closeM();renderAdvent();};}
+ if(g)$("adDel").onclick=()=>{withUndo("Regalino rimosso",()=>{delete G[d];});saveNow();closeM();renderAdvent();};}
 function simToggle(){askPw(()=>{S.simOk=true;save();reSet();react("cheer","Modalità sviluppatore sbloccata");});}
 function setDevDay(v){S.devDate=v||null;save();refreshGift();renderAdvent();reSet();if(v)toast("Teletrasportato al "+v.split("-").reverse().join("/"));react("cheer",v?"Wooosh! ⏳":"Si torna a oggi");}
 $("v-set").addEventListener("input",e=>{const i=e.target.id;
@@ -703,7 +746,7 @@ $("v-set").addEventListener("click",e=>{const b=e.target.closest("button");if(!b
  else if(b.id==="devLock"){S.devDate=null;S.simOk=false;save();refreshGift();renderAdvent();reSet();}
  else if(b.dataset.th){S.theme=b.dataset.th;applyTheme();save();renderSet();react("cheer","Che stile!");}
  else if(b.id==="cDel"){S.cust.img=null;applyTheme();save();}
- else if(b.id==="mDel"){S.mascots=S.mascots.filter(m=>m.id!==S.mSel);S.mSel=S.mascots[0].id;saveNow();initMascot();reSet();}
+ else if(b.id==="mDel"){withUndo("Mascotte eliminata",()=>{S.mascots=S.mascots.filter(m=>m.id!==S.mSel);S.mSel=S.mascots[0].id;});saveNow();initMascot();reSet();}
  else if(b.id==="expC"){if(!S.custom.length){toast("Non hai ancora creato carte");return;}copyText(enc({cards:S.custom}));}
  else if(b.id==="expW")waShare(enc({share:buildShare()}),"sbangy-dati.txt");
  else if(b.id==="expF")saveFile(enc({share:buildShare()}),"sbangy-dati.txt");
@@ -749,7 +792,7 @@ function tick(){cx.clearRect(0,0,innerWidth,innerHeight);
  P=P.filter(p=>p.l>0&&p.y<innerHeight+20);raf=P.length?requestAnimationFrame(tick):0;}
 ["gesturestart","gesturechange"].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault()));
 
-addEventListener("pagehide",saveNow);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveNow();else{dailyMsgs();maybeReminder();}});
+addEventListener("pagehide",saveNow);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveNow();else{dailyMsgs();maybeReminder();if(Date.now()-lastGreet>4*3600e3)greet();}});
 /* ================= AVVIO ================= */
 // Banner grande del regalo a ogni apertura: dopo qualche secondo (o un tocco) rimpicciolisce e si posa in alto
 function showSplash(){
@@ -759,7 +802,7 @@ function showSplash(){
  const out=open=>{if(done)return;done=true;clearTimeout(tm);const a=c.getBoundingClientRect(),b=$("giftBtn").getBoundingClientRect();
   c.style.transform=`translate(${b.left-a.left}px,${b.top-a.top}px) scale(${b.width/a.width},${b.height/a.height})`;c.style.opacity="0";sp.style.opacity="0";
   setTimeout(()=>{sp.classList.remove("on");sp.style.opacity="";c.style.transform="";c.style.opacity="";
-   if(open)giftModal();else if(location.protocol==="file:"||!storOK())toast("⚠️ Dati non conservati da file locale: vedi Impostazioni");},720);};
+   if(open)giftModal();else{if(location.protocol==="file:"||!storOK())toast("⚠️ Dati non conservati da file locale: vedi Impostazioni");tokenIntro();}greet();dodge();},720);};
  $("spOpen").onclick=e=>{e.stopPropagation();out(true);};sp.onclick=()=>out(false);tm=setTimeout(()=>out(false),4500);react("cheer","Sorpresa! 🎁");}
 const isDesk=()=>S.dev==="desktop"||(S.dev!=="phone"&&matchMedia("(hover:hover) and (pointer:fine)").matches&&innerWidth>=900);
 function applyDev(){document.documentElement.classList.toggle("desk",isDesk());M.place&&M.place();}
@@ -776,20 +819,23 @@ const _im0=initMascot;initMascot=function(){_im0();updateChatBtn();};
 function dailyMsgs(){const t=now(),y=t.getFullYear(),m=t.getMonth(),d=t.getDate(),k=y+"-"+(m+1)+"-"+d;
  if(y===2026&&m===11&&d>=1&&d<=24&&!ADV(myW())[d])sbMsg(`🎁 La casella del ${d} dicembre è aperta! Hai trovato il regalino di oggi? Aggiungilo al calendario.`,"advent","adv"+d);
  if(now()>=D4&&!unlocked()&&!(S.myLetter&&S.theirLetter))sbMsg("💌 Ricordati di scrivere la tua lettera per il 17 dicembre e di scambiarvi i file!","gift","lt"+k);
- if(unlocked())sbMsg("🎉 È il 17 dicembre! La lettera dei 5 mesi si è aperta: vieni a leggerla.","gift","g17");}
+ if(unlocked())sbMsg("🎉 È il 17 dicembre! La lettera dei 5 mesi si è aperta: vieni a leggerla.","gift","g17");
+ const hr=new Date().getHours(),per=hr<5?"n":hr<12?"m":hr<18?"p":"s";if(per==="m"||per==="s")sbMsg(GR[per][d%GR[per].length],null,"gr"+k+per);
+ if(S.lastPlay&&Date.now()-S.lastPlay>5*864e5)sbMsg("🦀 Non giocate da "+Math.floor((Date.now()-S.lastPlay)/864e5)+" giorni… mi sento solo! Una carta insieme?",null,"idle"+k);
+ S.caps.filter(c=>c.from!==myW()&&capOpen(c)).forEach(c=>sbMsg("💌 La capsula del tempo di "+(S.names[c.from]||"lui/lei")+" si è aperta! Vai a leggerla.","caps","cap"+c.id));}
 function maybeReminder(){if(!S.me||Date.now()-S.lastRem<6*3600e3)return;const A=S.names.a,B=S.names.b;
  const L=S.me==="b"?[`Ricordati sempre che ${A} ti vuole bene 💗`,`${A} pensa a te più spesso di quanto immagini.`,`Un pensiero gentile per ${A} oggi? Le farebbe tantissimo piacere.`,`Sei fortunato: ${A} sceglie te ogni giorno.`,`Fai un respiro: stai facendo un ottimo lavoro con ${A}. 💪`]
   :[`Ricordati sempre che sei bellissima ✨`,`Ricordati sempre che ${B} ti vuole bene 💗`,`${B} è fortunato ad averti accanto.`,`Oggi sei più forte di quanto pensi.`,`${B} pensa a te, anche quando non lo dice.`];
- S.lastRem=Date.now();sbMsg(L[Math.floor(Math.random()*L.length)]);}
+ S.lastRem=Date.now();const P=L.concat(now().getMonth()===11?XM:[]).concat(XG);sbMsg(P[Math.floor(Math.random()*P.length)]);}
 function trialReset(){ // dal 9 dicembre (fine prova) si azzera ciò che è stato provato; restano nomi, lettere, regalini, carte create, mascotte e tema
  if(S.resetDone||S.gameOk||S.devDate||new Date()<D9)return;
- S.resetDone=true;S.favs=[];S.coupons={};S.log=[];S.done=0;S.mile=0;S.turn="a";S.pass={};S.filter="all";S.demoN=0;
+ S.resetDone=true;S.favs=[];S.coupons={};S.log=[];S.done=0;S.mile=0;S.turn="a";S.pass={};S.filter="all";S.demoN=0;S.seen=[];S.lastPlay=0;
  S.chat=S.chat.filter(m=>m.from!=="sbang");S.notif={welcome:S.notif.welcome};S.lastRem=0;saveNow();
  sbMsg("🎮 La prova è finita! Ho azzerato le carte provate: da oggi si gioca davvero. Buon divertimento!",null,"reset");}
 function renderChat(){const o=S.me==="a"?"b":"a",src=mimg(cur()),fmt=t=>{const d=new Date(t),h=d.toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"});return d.toDateString()===new Date().toDateString()?h:d.toLocaleDateString("it-IT",{day:"numeric",month:"short"})+" · "+h;};
  const ms=S.chat.slice().sort((a,b)=>a.t-b.t).map(m=>{
   if(m.mine)return `<div class="mg me">${esc(m.text)}<small>${fmt(m.t)}</small></div>`;
-  if(m.from==="sbang")return `<div class="mg sb">${esc(m.text)}${m.act?`<br><button data-act="${m.act}">${m.act==="gift"?"Apri la lettera":"Vai al calendario"}</button>`:""}<small>${fmt(m.t)}</small></div>`;
+  if(m.from==="sbang")return `<div class="mg sb">${esc(m.text)}${m.act?`<br><button data-act="${m.act}">${m.act==="gift"?"Apri la lettera":m.act==="caps"?"Vai alle capsule":"Vai al calendario"}</button>`:""}<small>${fmt(m.t)}</small></div>`;
   return `<div class="mg ot" style="--pcx:${PC[m.from]}"><span class="who">${esc(S.names[m.from])}</span>${esc(m.text)}<small>${fmt(m.t)}</small></div>`;}).join("");
  $("chat").innerHTML=`<div class="cp"><div class="chd"><div class="av">${src?`<img src="${src}" alt="">`:"🦀"}</div><div><b>${esc(cur().n)}</b><small>la tua mascotte</small></div><button class="x" data-x="1" aria-label="Chiudi">${svg("x")}</button></div>
  <div id="cmsgs">${ms||'<div class="empty"><span>💬</span>Nessun messaggio.</div>'}</div>
@@ -799,12 +845,66 @@ function renderChat(){const o=S.me==="a"?"b":"a",src=mimg(cur()),fmt=t=>{const d
 function openChat(){renderChat();$("chat").classList.add("on");S.chat.forEach(m=>{if(!m.mine)m.read=true;});save();updateChatDot();snd(520,.08);react("wave","Ciao! 💬");}
 const closeChat=()=>$("chat").classList.remove("on");
 function sendChat(){const i=$("cIn"),t=i.value.trim();if(!t)return;if(!S.me){toast("Imposta prima di chi è questo telefono");return;}
- S.chat.push({id:"u"+Date.now()+Math.random().toString(36).slice(2,5),t:Date.now(),from:S.me,text:t.slice(0,300),read:true,mine:true});save();renderChat();snd(660,.1);react("hop","Messaggio pronto! 💌");}
+ S.chat.push({id:"u"+Date.now()+Math.random().toString(36).slice(2,5),t:Date.now(),from:S.me,text:t.slice(0,300),read:true,mine:true});save();renderChat();snd(660,.1);react("hop","Messaggio pronto! 💌");setTimeout(()=>sbQuip(Q.send,1),700);}
 $("chatBtn").addEventListener("click",openChat);
 $("chat").addEventListener("click",e=>{const t=e.target;if(t.id==="chat"||t.closest("[data-x]"))closeChat();
- else if(t.dataset.act){closeChat();if(t.dataset.act==="gift")giftModal();else go("advent");}
+ else if(t.dataset.act){closeChat();if(t.dataset.act==="gift")giftModal();else if(t.dataset.act==="caps"){go("mem");memTab="cap";renderMem();}else go("advent");}
  else if(t.id==="cSend")sendChat();else if(t.id==="cWa")waShare(enc({share:buildShare()}),"sbangy-dati.txt");});
 $("chat").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="cIn"){e.preventDefault();sendChat();}});
+/* ================= GETTONI, CAPSULE, PERSONALITÀ DI SBANG ================= */
+function pickCard(pool){S.seen=S.seen||[];let fresh=pool.filter(c=>!S.seen.includes(c.id)); // il mazzo si esaurisce prima di ricominciare
+ if(!fresh.length){S.seen=S.seen.filter(id=>!pool.some(c=>c.id===id));fresh=pool;toast("Mazzo rimescolato 🔀");}
+ const w=fresh.map(c=>c.r?.3:1),tot=w.reduce((a,b)=>a+b,0);let x=Math.random()*tot,i=0;while(i<fresh.length-1&&x>=w[i]){x-=w[i];i++;}
+ S.seen.push(fresh[i].id);return fresh[i];} // le carte rare escono con probabilità ridotta
+function updatePass(){const b=$("passBtn");if(b)b.textContent=demoOn()?"Passa":"⏭ Passa · "+tok[S.turn]+" 🎟";}
+function tokenIntro(){if(tokShown||demoOn())return;tokShown=true;
+ modal(`<h2>🎟 Gettoni per passare</h2><p>Ognuno di voi ha <b>2 gettoni</b> per saltare un turno: al massimo 2 turni a testa.</p><p>I gettoni si azzerano a ogni apertura dell'app, quindi usateli bene. Finiti, passare costa una penitenza!</p><button class="btn full" id="tkOk">Si gioca!</button>`);
+ $("tkOk").onclick=closeM;react("wave","Due gettoni a testa!");}
+function dodge(){if(S.mPos||curView!=="draw")return;const box=$("mascot"),s=cur().s,W=innerWidth,H=innerHeight; // si sposta da sola se copre il gioco
+ const obs=[".deckwrap","#actions","#chips","#giftBtn"].map(q=>document.querySelector(q)).filter(Boolean).map(e=>e.getBoundingClientRect()).filter(r=>r.width>0);
+ const hit=(x,y)=>obs.some(r=>x<r.right&&x+s>r.left&&y<r.bottom&&y+s>r.top),base=H-s-90;
+ const f=[[8,base],[W-s-8,base],[8,Math.round(H*.45)],[W-s-8,Math.round(H*.45)],[8,70],[W-s-8,Math.round(H*.3)]].find(c=>!hit(c[0],c[1]));
+ if(f){box.style.left=f[0]+"px";box.style.top=f[1]+"px";}}
+addEventListener("resize",dodge);
+let lastGreet=0;
+function greet(){const h=new Date().getHours(),g=h<5?"Ancora sveglia/o? Buonanotte 🌙":h<12?"Buongiorno! ☀️":h<18?"Buon pomeriggio! 🌤":h<23?"Buonasera! 🌙":"Buonanotte, a nanna! 😴";lastGreet=Date.now();setTimeout(()=>say(g),700);}
+const Q={done:["Un'altra carta fatta: sto prendendo appunti 📝","Bravi! Il mio cuore di granchio si scioglie 🦀💗","Chele in su per voi due!","Questa la voglio nel libro dei momenti belli.","Siete adorabili, lo sapete?"],
+ pass:["Gettone speso! Spero ne sia valsa la pena 😏","Strategia da veri giocatori…","Passare è lecito, ma i gettoni sono pochi!"],
+ steal:["Colpo da maestro! Io non ho visto niente 🕵️","Furto perfetto: processo rimandato.","Nessuno è al sicuro dai ladri di coupon!"],
+ redeem:["Ottimo uso del coupon! 🎟","Coupon riscattato: ora si paga il conto 😄","Che bel momento: ve lo siete guadagnato!"],
+ cap:["Capsula sigillata. Le mie chele sono cucite: non dico niente 🤐","Il tempo la custodirà, io la sorveglio."],
+ send:["Messaggio custodito dalle mie chele 🦀 Ricordati di inviare i dati su WhatsApp!","Che dolce! Per consegnarlo, invia il file all'altra persona.","Pronto per la consegna: manca solo l'invio dei dati 📦"],
+ ms:["🏆 Nuovo traguardo! Merito di entrambi.","🏆 Guardate quante carte insieme: continuate così!"]};
+function sbQuip(pool,p){if(Math.random()>(p==null?.35:p))return;if(p!==1&&Date.now()-(S.lastQuip||0)<10*60e3)return;S.lastQuip=Date.now();sbMsg(pool[Math.floor(Math.random()*pool.length)]);}
+const GR={m:["Buongiorno! ☀️ Una carta insieme per iniziare bene?","Buongiorno amori! Oggi ci sarà un regalino nel calendario?","Sveglia! I granchi di buon umore camminano di lato, ma verso di voi 🦀"],
+ s:["Buonasera! 🌙 Una carta prima di cena?","Serata perfetta per una carta e una coccola.","Buonasera! Io sono pronto: voi?"]};
+const XG=["Fatto del giorno: i granchi camminano di lato, io cammino verso di voi 🦀","Idea: stasera una carta e una cioccolata calda ☕","Un abbraccio di 20 secondi fa miracoli. Provare per credere.","Ricordati di dire grazie, anche per le piccole cose 💛"];
+const XM=["🎄 Sbang ha già scelto il cappello da Babbo Natale!","❄️ Fuori fa freddo: il momento ideale per una carta sotto la coperta.","🎁 Hai già guardato il calendario di oggi?"];
+/* --- capsule del tempo --- */
+const capDate=c=>{const [y,m,d]=c.date.split("-").map(Number);return new Date(y,m-1,d);},capOpen=c=>now()>=capDate(c);
+function renderCaps(){const me=myW(),by=(a,b)=>capDate(a)-capDate(b),fmt=c=>capDate(c).toLocaleDateString("it-IT",{day:"numeric",month:"long",year:"numeric"});
+ const got=S.caps.filter(c=>c.from!==me).sort(by),mine=S.caps.filter(c=>c.from===me).sort(by);
+ $("capList").innerHTML=(got.length?"<h3>Per te</h3>"+got.map(c=>capOpen(c)?`<div class="item glass cap open" data-id="${c.id}" style="--c:${PC[c.from]}"><div class="t">💌 Da ${esc(S.names[c.from])}<small>${fmt(c)} · tocca per aprire</small></div></div>`
+  :`<div class="item glass cap" style="--c:${PC[c.from]}"><div class="t">🔒 Capsula di ${esc(S.names[c.from])}<small>Si apre il ${fmt(c)} · tra ${Math.max(1,Math.ceil((capDate(c)-now())/864e5))} giorni</small></div></div>`).join(""):"")
+  +"<h3>Scritte da te</h3>"+(mine.length?mine.map(c=>`<div class="item glass cap mine" data-id="${c.id}" style="--c:${PC[me]}"><div class="t">⏳ Per ${esc(S.names[othW()])}<small>Si apre il ${fmt(c)}</small></div><button class="icon-btn" data-del="${c.id}" aria-label="Elimina">${svg("trash")}</button></div>`).join(""):'<div class="empty"><span>⏳</span>Nessuna capsula: scrivine una per una data speciale.</div>');}
+function openCap(id){const c=S.caps.find(x=>x.id===id);if(!c)return;const mine=c.from===myW();
+ modal(`<h2>${mine?"⏳ La tua capsula":"💌 Capsula del tempo"}</h2><p style="color:var(--mute)">${mine?"Per "+esc(S.names[othW()]):"Da "+esc(S.names[c.from])} · ${capDate(c).toLocaleDateString("it-IT",{day:"numeric",month:"long",year:"numeric"})}</p><div class="letter">${esc(c.text)}</div>${c.p?`<img src="${c.p}" alt="" style="max-width:100%;border-radius:14px;margin-bottom:10px">`:""}<button class="btn full" id="cpOk">Chiudi</button>`);
+ $("cpOk").onclick=closeM;if(!mine){confetti(90);snd(740,.3);react("cheer","Una sorpresa per te! 💌");}}
+function capModal(){const me=myW(),t=now(),opts=[];let ph=null;
+ for(let i=0;opts.length<6&&i<14;i++){const d=new Date(t.getFullYear(),t.getMonth()+i,17);if(d>t)opts.push(d);}
+ const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+ modal(`<h2>⏳ Nuova capsula del tempo</h2><p>Un messaggio per ${esc(S.names[othW()])}: resta sigillato fino alla data che scegli.</p>
+ <label>Si apre il</label><input type="date" id="cpD"><div class="chips" style="flex-wrap:wrap;margin-top:8px">${opts.map(d=>`<button class="chip" data-d="${iso(d)}"><i></i>17 ${d.toLocaleDateString("it-IT",{month:"short"})}</button>`).join("")}</div>
+ <label>Messaggio</label><textarea id="cpT" placeholder="Per quando sarai…"></textarea><button class="btn ghost" id="cpMic" style="margin-top:8px">🎙 Detta</button>
+ <label>Foto (facoltativa)</label><input type="file" id="cpP" accept="image/*"><div id="cpPrev" style="text-align:center;padding:6px"></div><button class="btn full" id="cpGo">Sigilla la capsula</button>`);
+ mic($("cpT"),$("cpMic"));$("sheet").querySelectorAll("button[data-d]").forEach(b=>{b.onclick=()=>{$("cpD").value=b.dataset.d;};});
+ $("cpP").onchange=e=>{const f=e.target.files[0];if(f)readImg(f,400,d=>{ph=d;$("cpPrev").innerHTML=`<img src="${d}" alt="" style="max-width:100%;max-height:150px;border-radius:12px">`;});};
+ $("cpGo").onclick=()=>{const dv=$("cpD").value,tx=$("cpT").value.trim();if(!dv||!tx){toast("Scegli la data e scrivi il messaggio");return;}
+  const [y,m,d]=dv.split("-").map(Number);if(new Date(y,m-1,d)<=now()){toast("La data deve essere nel futuro");return;}
+  S.caps.push({id:"k"+Date.now()+Math.random().toString(36).slice(2,5),from:me,date:dv,text:tx,p:ph,t:Date.now()});saveNow();closeM();renderCaps();confetti(70);snd(660,.2);react("cheer","Capsula sigillata! ⏳");sbQuip(Q.cap,1);};}
+$("capNew").addEventListener("click",capModal);
+$("capList").addEventListener("click",e=>{const d=e.target.closest("[data-del]");if(d){withUndo("Capsula eliminata",()=>{S.caps=S.caps.filter(c=>c.id!==d.dataset.del);});save();renderCaps();return;}
+ const it=e.target.closest(".cap[data-id]");if(it)openCap(it.dataset.id);});
 const WELCOME=()=>"Ciao! Sono "+mnames()+" 🦀 Da qui ti scrivo promemoria e ti arrivano i messaggi dell'altra persona.";
 function start(){trialReset();applyDev();applyTheme();renderNav();renderChips();renderTurn();refreshGift();initMascot();updateChatBtn();
  if(S.me){sbMsg(WELCOME(),null,"welcome");dailyMsgs();maybeReminder();}updateChatDot();setInterval(()=>{dailyMsgs();maybeReminder();},1800000);
